@@ -48,7 +48,7 @@ namespace Labyrinthian
 					}
 					else
 					{
-						alpha = (int)(255 * Math.Pow(Math.Sqrt(distSquared) / radius, 0.5d));
+						alpha = (int)(255 * Math.Pow(Math.Sqrt(distSquared) / radius, 1.0d));
 					}
 					colorData[index] = new Color(0, 0, 0, alpha);
 					

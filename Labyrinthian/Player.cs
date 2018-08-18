@@ -7,14 +7,22 @@ using System;
 
 namespace Labyrinthian
 {
-	public class Player : IGameObject, IPosition
+	public class Player : IGameObject, IPosition, IHitbox
 	{
 		public Vector2 Position { get; set; }
-		public float speed = 5.0f;
+		public float speed = 2.0f;
 		public Texture2D Texture;
 		private SpriteAnimator spriteAnimator;
-		private int orientation = 1;
+		public int orientation = 1;
 		private bool isWalking = false;
+		public Rectangle Hitbox
+		{
+			get
+			{
+				return new Rectangle((int)this.Position.X - 12, (int)this.Position.Y - 12, 24, 24);
+			}
+		}
+
 
 		public Player()
 		{

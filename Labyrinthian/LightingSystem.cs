@@ -46,11 +46,17 @@ namespace Labyrinthian
 			spriteBatch.Draw(this.lightfilter, this.graphicsDevice.Viewport.Bounds, Color.White);
 		}
 
-		public void DrawRenderTarget(SpriteBatch spriteBatch)
+		public void RecreateRenderTarget()
+		{
+			this.lightfilter?.Dispose();
+			this.lightfilter = new RenderTarget2D(this.graphicsDevice, this.graphicsDevice.PresentationParameters.BackBufferWidth, this.graphicsDevice.PresentationParameters.BackBufferHeight, false, this.graphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+		}
+
+		public void DrawRenderTarget(SpriteBatch spriteBatch, Camera camera)
 		{
 			this.graphicsDevice.SetRenderTarget(this.lightfilter);
-			this.graphicsDevice.Clear(Color.Black);
-			spriteBatch.Begin(blendState: this.blendstate);
+			this.graphicsDevice.Clear(new Color(0,0,0,255));
+			spriteBatch.Begin(blendState: this.blendstate, transformMatrix: (camera.TransformationMatrix));
 			foreach (var lightsource in this.lightSources)
 			{
 				Vector2 centerPosition = lightsource.Item1.Position;
@@ -60,19 +66,22 @@ namespace Labyrinthian
 			spriteBatch.End();
 
 			this.graphicsDevice.SetRenderTarget(null);
+			
+			
+			//this.graphicsDevice.SetRenderTarget(this.lightfilter);
+			//this.graphicsDevice.Clear(Color.Green);
+			//spriteBatch.Begin(blendState: this.blendstate);
+			//foreach (var lightsource in this.lightSources)
+			//{
+			//	Vector2 centerPosition = lightsource.Item1.Position;
+			//	int radius = lightsource.Item2;
+			//	spriteBatch.Draw(this.LightTexture, new Rectangle((int)centerPosition.X - radius, (int)centerPosition.Y - radius, 2 * radius, 2 * radius), Color.White);
+			//}
+			//spriteBatch.End();
+
+			//this.graphicsDevice.SetRenderTarget(null);
 		}
 
-		internal void RecreateRenderTarget()
-		{
-			this.lightfilter?.Dispose();
-			this.lightfilter = new RenderTarget2D(this.graphicsDevice, this.graphicsDevice.PresentationParameters.BackBufferWidth, this.graphicsDevice.PresentationParameters.BackBufferHeight, false, this.graphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
-		}
-
-		/// <summary>
-		/// Currently only supports single Lightsource, adding a new one overwrites the old one.
-		/// </summary>
-		/// <param name="sourcePosition"></param>
-		/// <param name="radius"></param>
 		public void AddLightSource(IPosition sourcePosition, int radius)
 		{
 			this.lightSources.Add(new Tuple<IPosition, int>(sourcePosition, radius));

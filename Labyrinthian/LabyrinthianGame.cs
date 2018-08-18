@@ -10,11 +10,11 @@ namespace Labyrinthian
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+		TileSystem tileSystem;
 		Player player;
-		Player player2;
-		GroundTile[,] tiles;
 		LightingSystem lighting;
+		PhysicsSystem physicsSystem;
+		Camera camera;
 
         public LabyrinthianGame()
         {
@@ -29,27 +29,40 @@ namespace Labyrinthian
 			this.Window.ClientSizeChanged += window_ClientSizeChanged;
 			this.Window.AllowUserResizing = true;
             base.Initialize();
-			this.player = new Player();
-			this.player.Initialize();
-			this.player2 = new Player() { Position = new Vector2(200, 200), speed = 1.0f };
-			this.player2.Initialize();
-			this.tiles = new GroundTile[20, 20];
-			for (int i = 0; i < this.tiles.GetLength(0); ++i)
+
+			this.tileSystem = new TileSystem();
+			this.tileSystem.Initialize();
+
+			this.player = new Player
 			{
-				for (int j = 0; j < this.tiles.GetLength(1); ++j)
-				{
-					Vector2 position = new Vector2(32 * i, 32 * j);
-					this.tiles[i, j] = new GroundTile(position, this.Content.Load<Texture2D>(@"Textures/Ground/groundTile"));
-				}
-			}
+				Position = this.tileSystem.StartTile.TileRectangle.Center.ToVector2()
+			};
+			this.player.Initialize();
+
+
 			this.lighting = new LightingSystem(this.GraphicsDevice);
 			this.lighting.AddLightSource(this.player, 100);
-			this.lighting.AddLightSource(this.player2, 200);
+
+			this.physicsSystem = new PhysicsSystem
+			{
+				Player = this.player,
+				Tiles = new IHitbox[this.tileSystem.Tiles.GetLength(0), this.tileSystem.Tiles.GetLength(1)]
+			};
+			foreach (var tile in this.tileSystem.Tiles)
+			{
+				if (tile is IHitbox box)
+				{
+					this.physicsSystem.Tiles[tile.X, tile.Y] = box;
+				}
+			}
+
+			this.camera = new Camera(this.GraphicsDevice.Viewport, 1.0f, this.player);
 		}
 
 		private void window_ClientSizeChanged(object sender, System.EventArgs e)
 		{
 			this.lighting?.RecreateRenderTarget();
+			this.camera?.SetViewport(this.GraphicsDevice.Viewport);
 		}
 
 		protected override void LoadContent()
@@ -57,7 +70,7 @@ namespace Labyrinthian
 			this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
 			this.Content.Load<Texture2D>(@"Textures/PlayerFemale");
-			this.Content.Load<Texture2D>(@"Textures/Ground/groundTile");
+			this.Content.Load<Texture2D>(@"Textures/GroundSheet");
 			this.Content.Load<Texture2D>(@"Textures/test");
 		}
 
@@ -73,23 +86,23 @@ namespace Labyrinthian
 			}
 
 			this.player.Update(gameTime);
-			this.player2.Update(gameTime);
+			this.tileSystem.Update(gameTime);
+			this.physicsSystem.Update(gameTime);
+			this.camera.Update(gameTime);
 			base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-			this.lighting.DrawRenderTarget(this.spriteBatch);
+			this.lighting.DrawRenderTarget(this.spriteBatch, this.camera);
 
 			this.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-			this.spriteBatch.Begin();
-			foreach (var tile in this.tiles)
-			{
-				tile.Draw(gameTime, this.spriteBatch);
-			}
+			this.spriteBatch.Begin(transformMatrix: this.camera.TransformationMatrix);
+			this.tileSystem.Draw(gameTime, this.spriteBatch);
 			this.player.Draw(gameTime, this.spriteBatch);
-			this.player2.Draw(gameTime, this.spriteBatch);
+			this.spriteBatch.End();
+			this.spriteBatch.Begin();
 			this.lighting.Draw(gameTime, this.spriteBatch);
 			this.spriteBatch.End();
 

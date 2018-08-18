@@ -60,7 +60,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnimatedSprite.cs" />
-    <Compile Include="GroundTile.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="IHitbox.cs" />
+    <Compile Include="PhysicsSystem.cs" />
+    <Compile Include="Tiles\GroundTile.cs" />
     <Compile Include="IPosition.cs" />
     <Compile Include="LabyrinthianGame.cs" />
     <Compile Include="LightingSystem.cs" />
@@ -68,6 +71,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="ProgrammerArt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tiles\MazeGenerator.cs" />
+    <Compile Include="Tiles\PointEventArgs.cs" />
+    <Compile Include="Tiles\Tile.cs" />
+    <Compile Include="Tiles\TileSystem.cs" />
+    <Compile Include="Tiles\WallTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
