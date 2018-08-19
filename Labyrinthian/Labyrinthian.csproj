@@ -62,11 +62,12 @@
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="IHitbox.cs" />
+    <Compile Include="Lighting\LightSource.cs" />
     <Compile Include="PhysicsSystem.cs" />
     <Compile Include="Tiles\GroundTile.cs" />
     <Compile Include="IPosition.cs" />
     <Compile Include="LabyrinthianGame.cs" />
-    <Compile Include="LightingSystem.cs" />
+    <Compile Include="Lighting\LightingSystem.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgrammerArt.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Tiles\Tile.cs" />
     <Compile Include="Tiles\TileSystem.cs" />
     <Compile Include="Tiles\WallTile.cs" />
+    <Compile Include="Torch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

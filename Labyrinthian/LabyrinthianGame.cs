@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Labyrinthian
 {
@@ -12,9 +13,11 @@ namespace Labyrinthian
         SpriteBatch spriteBatch;
 		TileSystem tileSystem;
 		Player player;
+		Player player2;
 		LightingSystem lighting;
 		PhysicsSystem physicsSystem;
 		Camera camera;
+		List<Torch> torches = new List<Torch>();
 
         public LabyrinthianGame()
         {
@@ -39,9 +42,25 @@ namespace Labyrinthian
 			};
 			this.player.Initialize();
 
+			this.player2 = new Player
+			{
+				Position = this.tileSystem.EndTile.TileRectangle.Center.ToVector2()
+			};
+			this.player.Initialize();
 
 			this.lighting = new LightingSystem(this.GraphicsDevice);
-			this.lighting.AddLightSource(this.player, 100);
+			for (int i = 0; i < 10; i++)
+			{
+				for (int j = 0; j < 10; j++)
+				{
+					Torch torch = new Torch(new Vector2(i * 64 + 16, j * 64 + 16));
+					this.torches.Add(torch);
+					this.lighting.AddLightSource(new LightSource(torch, 50) { Flickering = true });
+				}
+			}
+
+			this.lighting.AddLightSource(new LightSource(this.player, 100));
+			this.lighting.AddLightSource(new LightSource(this.player2, 100));
 
 			this.physicsSystem = new PhysicsSystem
 			{
@@ -94,12 +113,16 @@ namespace Labyrinthian
 
         protected override void Draw(GameTime gameTime)
         {
-			this.lighting.DrawRenderTarget(this.spriteBatch, this.camera);
+			this.lighting.DrawRenderTarget(gameTime, this.spriteBatch, this.camera);
 
 			this.GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			this.spriteBatch.Begin(transformMatrix: this.camera.TransformationMatrix);
 			this.tileSystem.Draw(gameTime, this.spriteBatch);
+			foreach (var torch in this.torches)
+			{
+				torch.Draw(gameTime, this.spriteBatch);
+			}
 			this.player.Draw(gameTime, this.spriteBatch);
 			this.spriteBatch.End();
 			this.spriteBatch.Begin();

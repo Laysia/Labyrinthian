@@ -32,7 +32,7 @@ namespace Labyrinthian
 
 		public void Initialize()
 		{
-			this.spriteAnimator = new SpriteAnimator(getAnimationRectangles()) { TimeBetweenAnimationInMs = 600 / this.speed };
+			this.spriteAnimator = new SpriteAnimator(AnimationRectangles) { TimeBetweenAnimationInMs = 600 / this.speed };
 		}
 
 		public void Update(GameTime gameTime)
@@ -108,20 +108,16 @@ namespace Labyrinthian
 			spriteBatch.Draw(this.Texture, this.Position - this.spriteAnimator.GetSourceRectangle(gameTime, animationName).Size.ToVector2() / 2, this.spriteAnimator.GetSourceRectangle(gameTime, animationName), Color.White);
 		}
 
-		private Dictionary<string, Rectangle[]> getAnimationRectangles()
+		public static Dictionary<string, Rectangle[]> AnimationRectangles = new Dictionary<string, Rectangle[]>
 		{
-			Dictionary<string, Rectangle[]> animation = new Dictionary<string, Rectangle[]>
-			{
-				{ "up", new Rectangle[] { new Rectangle(0, 0, 32, 32) } },
-				{ "left", new Rectangle[] { new Rectangle(0, 32, 32, 32) } },
-				{ "down", new Rectangle[] { new Rectangle(0, 64, 32, 32) } },
-				{ "right", new Rectangle[] { new Rectangle(0, 96, 32, 32) } },
-				{ "walk_up", new Rectangle[] { new Rectangle(32, 0, 32, 32), new Rectangle(0, 0, 32, 32), new Rectangle(64, 0, 32, 32), new Rectangle(0, 0, 32, 32) } },
-				{ "walk_left", new Rectangle[] { new Rectangle(32, 32, 32, 32), new Rectangle(0, 32, 32, 32), new Rectangle(64, 32, 32, 32), new Rectangle(0, 32, 32, 32) } },
-				{ "walk_down", new Rectangle[] { new Rectangle(32, 64, 32, 32), new Rectangle(0, 64, 32, 32), new Rectangle(64, 64, 32, 32), new Rectangle(0, 64, 32, 32) } },
-				{ "walk_right", new Rectangle[] { new Rectangle(32, 96, 32, 32), new Rectangle(0, 96, 32, 32), new Rectangle(64, 96, 32, 32), new Rectangle(0, 96, 32, 32) } }
-			};
-			return animation;
-		}
+			{ "up", new Rectangle[] { new Rectangle(0, 0, 32, 32) } },
+			{ "left", new Rectangle[] { new Rectangle(0, 32, 32, 32) } },
+			{ "down", new Rectangle[] { new Rectangle(0, 64, 32, 32) } },
+			{ "right", new Rectangle[] { new Rectangle(0, 96, 32, 32) } },
+			{ "walk_up", new Rectangle[] { new Rectangle(32, 0, 32, 32), new Rectangle(0, 0, 32, 32), new Rectangle(64, 0, 32, 32), new Rectangle(0, 0, 32, 32) } },
+			{ "walk_left", new Rectangle[] { new Rectangle(32, 32, 32, 32), new Rectangle(0, 32, 32, 32), new Rectangle(64, 32, 32, 32), new Rectangle(0, 32, 32, 32) } },
+			{ "walk_down", new Rectangle[] { new Rectangle(32, 64, 32, 32), new Rectangle(0, 64, 32, 32), new Rectangle(64, 64, 32, 32), new Rectangle(0, 64, 32, 32) } },
+			{ "walk_right", new Rectangle[] { new Rectangle(32, 96, 32, 32), new Rectangle(0, 96, 32, 32), new Rectangle(64, 96, 32, 32), new Rectangle(0, 96, 32, 32) } }
+		};
 	}
 }

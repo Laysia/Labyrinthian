@@ -12,7 +12,7 @@ namespace Labyrinthian
 		public Texture2D BlackTexture;
 
 		private GraphicsDevice graphicsDevice;
-		private List<Tuple<IPosition, int>> lightSources = new List<Tuple<IPosition, int>>();
+		private List<LightSource> lightSources = new List<LightSource>();
 		public RenderTarget2D lightfilter;
 
 		/*
@@ -34,7 +34,7 @@ namespace Labyrinthian
 		public LightingSystem(GraphicsDevice graphicsDevice)
 		{
 			this.graphicsDevice = graphicsDevice;
-			this.LightTexture = ProgrammerArt.GradientBlackCircle;//LabyrinthianGame.Game.Content.Load<Texture2D>(@"Textures/test");
+			
 			this.BlackTexture = ProgrammerArt.BlackPixel;
 			RecreateRenderTarget();
 			
@@ -52,16 +52,14 @@ namespace Labyrinthian
 			this.lightfilter = new RenderTarget2D(this.graphicsDevice, this.graphicsDevice.PresentationParameters.BackBufferWidth, this.graphicsDevice.PresentationParameters.BackBufferHeight, false, this.graphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
 		}
 
-		public void DrawRenderTarget(SpriteBatch spriteBatch, Camera camera)
+		public void DrawRenderTarget(GameTime gameTime, SpriteBatch spriteBatch, Camera camera)
 		{
 			this.graphicsDevice.SetRenderTarget(this.lightfilter);
 			this.graphicsDevice.Clear(new Color(0,0,0,255));
 			spriteBatch.Begin(blendState: this.blendstate, transformMatrix: (camera.TransformationMatrix));
 			foreach (var lightsource in this.lightSources)
 			{
-				Vector2 centerPosition = lightsource.Item1.Position;
-				int radius = lightsource.Item2;
-				spriteBatch.Draw(this.LightTexture, new Rectangle((int)centerPosition.X - radius, (int)centerPosition.Y - radius, 2 * radius, 2 * radius), Color.White);
+				lightsource.Draw(gameTime, spriteBatch);
 			}
 			spriteBatch.End();
 
@@ -82,9 +80,9 @@ namespace Labyrinthian
 			//this.graphicsDevice.SetRenderTarget(null);
 		}
 
-		public void AddLightSource(IPosition sourcePosition, int radius)
+		public void AddLightSource(LightSource lightSource)
 		{
-			this.lightSources.Add(new Tuple<IPosition, int>(sourcePosition, radius));
+			this.lightSources.Add(lightSource);
 		}
 
 		public void Initialize()

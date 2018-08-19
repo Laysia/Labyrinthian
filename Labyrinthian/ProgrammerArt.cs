@@ -7,13 +7,10 @@ namespace Labyrinthian
 {
 	public static class ProgrammerArt
 	{
-		public static Texture2D GradientBlackCircle { get; private set; }
-
 		public static Texture2D BlackPixel { get; private set; }
 
 		static ProgrammerArt()
 		{
-			GradientBlackCircle = createGreadientBlackCircle(100);
 			BlackPixel = createBlackPixel();
 		}
 
@@ -24,7 +21,7 @@ namespace Labyrinthian
 			return texture;
 		}
 
-		private static Texture2D createGreadientBlackCircle(int radius)
+		public static Texture2D CreateGradientBlackCircle(int radius, double pow)
 		{
 			Texture2D texture = new Texture2D(LabyrinthianGame.Game.GraphicsDevice, 2 * radius, 2 * radius);
 
@@ -48,7 +45,7 @@ namespace Labyrinthian
 					}
 					else
 					{
-						alpha = (int)(255 * Math.Pow(Math.Sqrt(distSquared) / radius, 1.0d));
+						alpha = (int)(255 * Math.Pow(Math.Sqrt(distSquared) / radius, pow));
 					}
 					colorData[index] = new Color(0, 0, 0, alpha);
 					
