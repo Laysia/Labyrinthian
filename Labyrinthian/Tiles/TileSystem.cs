@@ -55,12 +55,12 @@ namespace Labyrinthian
 							}
 							else
 							{
-								if (gen.FurthestPoint == new Point(x,y))
+								if (gen.FurthestPoint == new Point(x,y) && this.EndTile == null)
 								{
 									tile = new GroundTile(x * scale + i, y * scale + j) { TestColor = Color.LightGreen };
 									this.EndTile = tile;
 								}
-								else if ((x == 1 && y == 1))
+								else if ((x == 1 && y == 1) && this.StartTile == null)
 								{
 									tile = new GroundTile(x * scale + i, y * scale + j) { TestColor = Color.Black };
 									this.StartTile = tile;

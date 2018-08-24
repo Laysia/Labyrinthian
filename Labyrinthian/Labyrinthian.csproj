@@ -62,7 +62,11 @@
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="IHitbox.cs" />
+    <Compile Include="Level.cs" />
     <Compile Include="Lighting\LightSource.cs" />
+    <Compile Include="Maze\Maze.cs" />
+    <Compile Include="Maze\MazeGenerator.cs" />
+    <Compile Include="Maze\MazeLayer.cs" />
     <Compile Include="PhysicsSystem.cs" />
     <Compile Include="Tiles\GroundTile.cs" />
     <Compile Include="IPosition.cs" />
