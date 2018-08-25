@@ -1,14 +1,29 @@
 ﻿using CHMonoTools.ECS;
 using Microsoft.Xna.Framework;
 
-namespace Labyrinthian.Components
+namespace Labyrinthian
 {
 	class PhysicsHitboxComponent : IComponent
 	{
 		public Entity Entity { get; set; }
-		private PositionComponent entityPosition;
+		public PositionComponent EntityPosition { get; set; }
 
-		public Rectangle Hitbox { get; set; }
+		public int Width { get; set; }
+		public int Height { get; set; }
+		public Rectangle Hitbox
+		{
+			get
+			{
+				return new Rectangle(this.EntityPosition?.Position.ToPoint() - new Point(this.Width / 2, this.Height / 2) ?? Vector2.Zero.ToPoint(), new Point(this.Width, this.Height));
+			}
+		}
+
+		public PhysicsHitboxComponent(int Width, int Height)
+		{
+			this.Width = Width;
+			this.Height = Height;
+			this.EntityPosition = this.Entity?.GetComponent<PositionComponent>();
+		}
 
 		public void Initialize()
 		{
@@ -16,18 +31,13 @@ namespace Labyrinthian.Components
 
 		public void Update(GameTime gameTime)
 		{
-			if (this.entityPosition == null || this.entityPosition.Entity != this.Entity)
+			if (this.EntityPosition == null || this.EntityPosition.Entity != this.Entity)
 			{
-				this.entityPosition = this.Entity?.GetComponent<PositionComponent>();
-				if (this.entityPosition == null)
+				this.EntityPosition = this.Entity?.GetComponent<PositionComponent>();
+				if (this.EntityPosition == null)
 				{
 					return;
 				}
-			}
-
-			if (this.entityPosition.Position != this.entityPosition.LastTickPosition)
-			{
-				this.Hitbox = new Rectangle((int)this.entityPosition.Position.X - 12, (int)this.entityPosition.Position.Y - 12, 24, 24);
 			}
 		}
 	}

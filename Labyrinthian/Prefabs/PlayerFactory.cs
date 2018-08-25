@@ -1,5 +1,4 @@
 ﻿using CHMonoTools.ECS;
-using Labyrinthian.Components;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Labyrinthian.Prefabs
@@ -16,7 +15,7 @@ namespace Labyrinthian.Prefabs
 			player.Add(component);
 			player.Add(new TransformComponent());
 			player.Add(new PlayerSpriteComponent(LabyrinthianGame.Game.Content.Load<Texture2D>(@"Textures/PlayerFemale"), new SpriteAnimator(SpriteAnimator.PlayerRectangles) { TimeBetweenAnimationInMs = 200 }));
-			player.Add(new PhysicsHitboxComponent());
+			player.Add(new PhysicsHitboxComponent(24, 24));
 			player.Add(new LightSourceComponent(100));
 			player.Add(new CameraComponent());
 

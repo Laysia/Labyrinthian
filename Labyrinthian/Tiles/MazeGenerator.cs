@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Labyrinthian
 {
@@ -14,7 +12,7 @@ namespace Labyrinthian
 		/// <summary>
 		/// Event is fired whenever a tile is deleted in the maze
 		/// </summary>
-		public event EventHandler<PointEventArgs> MazeChanged;
+		//public event EventHandler<PointEventArgs> MazeChanged;
 
 
 		/// <summary>
@@ -23,10 +21,10 @@ namespace Labyrinthian
 		/// <param name="p">The Point where the deleted tile was</param>
 		protected void OnTileDeleted(Point p)
 		{
-			if (MazeChanged != null)
-			{
-				MazeChanged(this, new PointEventArgs(p));
-			}
+			//if (MazeChanged != null)
+			//{
+			//	MazeChanged(this, new PointEventArgs(p));
+			//}
 		}
 
 		#endregion

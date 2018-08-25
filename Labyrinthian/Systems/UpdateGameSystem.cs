@@ -1,15 +1,15 @@
 ﻿using CHMonoTools.ECS;
-using CHMonoTools;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
-namespace Labyrinthian.Systems
+namespace Labyrinthian
 {
 	/// <summary>
 	/// Ist das überhaupt nötig oder updates in den jeweliigen systemen aufrufen?
 	/// </summary>
 	class UpdateGameSystem : GameSystem
 	{
+		List<PositionComponent> positions = new List<PositionComponent>();
 		List<IComponent> components = new List<IComponent>();
 
 		public UpdateGameSystem(EntityContainer entityContainer) : base(entityContainer)
@@ -23,16 +23,34 @@ namespace Labyrinthian.Systems
 			{
 				comp.Update(gameTime);
 			}
+			foreach (var pcomp in this.positions)
+			{
+				pcomp.Update(gameTime);
+			}
 		}
 
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-			this.components.Add(e.Component);
+			if (e.Component is PositionComponent p)
+			{
+				this.positions.Add(p);
+			}
+			else
+			{
+				this.components.Add(e.Component);
+			}
 		}
 
 		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
 		{
-			this.components.Remove(e.Component);
+			if (e.Component is PositionComponent p)
+			{
+				this.positions.Remove(p);
+			}
+			else
+			{
+				this.components.Remove(e.Component);
+			}
 		}
 	}
 }

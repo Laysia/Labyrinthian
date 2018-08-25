@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Labyrinthian.Components
+namespace Labyrinthian
 {
 	class PlayerInputComponent : IComponent
 	{

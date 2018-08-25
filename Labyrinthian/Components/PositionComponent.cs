@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Labyrinthian.Components
+namespace Labyrinthian
 {
 	class PositionComponent : IComponent
 	{
@@ -52,6 +52,13 @@ namespace Labyrinthian.Components
 			}
 		}
 		
+		public PositionComponent() { }
+
+		public PositionComponent(Vector2 Position)
+		{
+			this.Position = Position;
+			this.LastTickPosition = Position;
+		}
 
 		public Entity Entity { get; set; }
 

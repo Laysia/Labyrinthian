@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Labyrinthian.Components
+namespace Labyrinthian
 {
 	class CameraComponent : IComponent
 	{

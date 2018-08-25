@@ -1,11 +1,9 @@
-﻿using System;
-using CHMonoTools;
+﻿using CHMonoTools;
 using CHMonoTools.ECS;
-using Labyrinthian.Components;
 using Labyrinthian.Prefabs;
-using Labyrinthian.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Labyrinthian
 {
@@ -17,6 +15,7 @@ namespace Labyrinthian
 		public LightingGameSystem LightingGameSystem { get; set; }
 		public RenderGameSystem RenderGameSystem { get; set; }
 		public UpdateGameSystem UpdateGameSystem { get; set; }
+		public PhysicsGameSystem PhysicsGameSystem { get; set; }
 
 
 		public Screen(Game game)
@@ -35,11 +34,12 @@ namespace Labyrinthian
 			this.LightingGameSystem = new LightingGameSystem(this.EntityContainer, this.Game.GraphicsDevice);
 			this.RenderGameSystem = new RenderGameSystem(this.EntityContainer);
 			this.UpdateGameSystem = new UpdateGameSystem(this.EntityContainer);
+			this.PhysicsGameSystem = new PhysicsGameSystem(this.EntityContainer);
 
-			this.EntityContainer.Add(PlayerFactory.CreatePlayerEntity());
-			for (int i = 0; i < 10; i++)
+			createTiles();
+			for (int i = 0; i < 20; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 0; j < 20; j++)
 				{
 					if (rng.NextDouble() > 0.9)
 					{
@@ -48,7 +48,57 @@ namespace Labyrinthian
 					}
 				}
 			}
+			this.EntityContainer.Add(PlayerFactory.CreatePlayerEntity());
+
 		}
+
+		private void createTiles()
+		{
+			int width = 10;
+			int height = 10;
+
+			int scale = 1;
+
+			MazeGenerator gen = new MazeGenerator(width, height, new Point(1, 1), false);
+			byte[,] maze = gen.CreateMaze();
+
+			for (int x = 0; x < width; ++x)
+			{
+				for (int y = 0; y < height; ++y)
+				{
+					for (int i = 0; i < scale; ++i)
+					{
+						for (int j = 0; j < scale; ++j)
+						{
+							Entity tile;
+							if (maze[x, y] == 1)
+							{
+								tile = TileFactory.CreateWallTile(new Vector2(x * scale + i, y * scale + j) * 32);
+							}
+							else
+							{
+								if (gen.FurthestPoint == new Point(x, y)/* && this.EndTile == null*/)
+								{
+									tile = TileFactory.CreateFloorTile(new Vector2(x * scale + i, y * scale + j) * 32); // { TestColor = Color.LightGreen };
+									//this.EndTile = tile;
+								}
+								else if ((x == 1 && y == 1) /*&& this.StartTile == null*/)
+								{
+									tile = TileFactory.CreateFloorTile(new Vector2(x * scale + i, y * scale + j) * 32); // { TestColor = Color.Black };
+									//this.StartTile = tile;
+								}
+								else
+								{
+									tile = TileFactory.CreateFloorTile(new Vector2(x * scale + i, y * scale + j) * 32);
+								}
+							}
+							this.EntityContainer.Add(tile);
+						}
+					}
+				}
+			}
+		}
+
 
 		private void window_ClientSizeChanged(object sender, System.EventArgs e)
 		{
@@ -71,6 +121,7 @@ namespace Labyrinthian
 
 		public void Update(GameTime gameTime)
 		{
+			this.PhysicsGameSystem.Update(gameTime);
 			this.UpdateGameSystem.Update(gameTime);
 		}
 	}

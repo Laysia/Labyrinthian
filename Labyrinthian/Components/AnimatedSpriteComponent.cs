@@ -1,37 +1,23 @@
-﻿using CHMonoTools.ECS;
+﻿using System;
+using CHMonoTools.ECS;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Labyrinthian.Components
+namespace Labyrinthian
 {
-	class AnimatedSpriteComponent : IDrawableComponent
+	class AnimatedSpriteComponent : SpriteComponent
 	{
-		public Entity Entity { get; set; }
-
-		public Texture2D Texture;
 		protected SpriteAnimator SpriteAnimator { get; set; }
 
-		protected PositionComponent entityPosition;
-
-		public AnimatedSpriteComponent(Texture2D texture, SpriteAnimator spriteAnimator)
+		public AnimatedSpriteComponent(Texture2D texture, SpriteAnimator spriteAnimator) : base(texture)
 		{
-			this.Texture = texture;
 			this.SpriteAnimator = spriteAnimator;
 		}
 
-		public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-			if (this.entityPosition == null || this.entityPosition.Entity != this.Entity)
-			{
-				this.entityPosition = this.Entity?.GetComponent<PositionComponent>();
-				if (this.entityPosition == null)
-				{
-					return;
-				}
-			}
-
-			Rectangle sourceRectangle = GetSourceRectangle();
-			spriteBatch.Draw(this.Texture, this.entityPosition.Position - sourceRectangle.Size.ToVector2() / 2, sourceRectangle, Color.White);
+			this.SourceRectangle = GetSourceRectangle();
+			base.Draw(gameTime, spriteBatch);
 		}
 
 		protected virtual Rectangle GetSourceRectangle()
@@ -39,14 +25,15 @@ namespace Labyrinthian.Components
 			return new Rectangle();
 		}
 
-		public void Initialize()
+		public override void Initialize()
 		{
-
+			base.Initialize();
 		}
 
-		public void Update(GameTime gameTime)
+		public override void Update(GameTime gameTime)
 		{
 			this.SpriteAnimator.Update(gameTime);
+			base.Update(gameTime);
 		}
 	}
 }

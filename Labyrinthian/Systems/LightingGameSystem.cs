@@ -1,10 +1,9 @@
 ﻿using CHMonoTools.ECS;
-using Labyrinthian.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Labyrinthian.Systems
+namespace Labyrinthian
 {
 	class LightingGameSystem : DrawableGameSystem
 	{

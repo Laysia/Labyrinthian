@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Labyrinthian.Components
+namespace Labyrinthian
 {
 	class PlayerSpriteComponent : AnimatedSpriteComponent
 	{
@@ -17,6 +17,14 @@ namespace Labyrinthian.Components
 		protected override Rectangle GetSourceRectangle()
 		{
 			string animationName = "";
+			if (this.entityPosition == null)
+			{
+				this.entityPosition = this.Entity?.GetComponent<PositionComponent>();
+				if (this.entityPosition == null)
+				{
+					return new Rectangle();
+				}
+			}
 			if (this.entityPosition.LastTickPosition != this.entityPosition.Position)
 			{
 				switch (this.entityPosition.Orientation)

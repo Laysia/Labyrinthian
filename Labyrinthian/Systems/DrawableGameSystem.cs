@@ -1,9 +1,8 @@
 ﻿using CHMonoTools.ECS;
-using Labyrinthian.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Labyrinthian.Systems
+namespace Labyrinthian
 {
 	abstract class DrawableGameSystem : GameSystem, CHMonoTools.IDrawable
 	{

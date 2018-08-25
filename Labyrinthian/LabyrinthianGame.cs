@@ -1,9 +1,6 @@
-﻿using Labyrinthian.Components;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
 
 namespace Labyrinthian
 {
@@ -14,7 +11,6 @@ namespace Labyrinthian
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-		//Level currentlevel;
 		int levelCounter = 0;
 		Screen screen;
 		internal static PositionComponent PlayerPosition { get; set; }
@@ -32,21 +28,7 @@ namespace Labyrinthian
 			this.Window.AllowUserResizing = true;
 			this.screen = new Screen(this);
             base.Initialize();
-			//createNewLevel();
 		}
-
-		//private void createNewLevel()
-		//{
-		//	this.currentlevel = new Level(this);
-		//	this.currentlevel.Initialize();
-		//	this.currentlevel.LevelComplete += level_LevelComplete;
-		//	this.levelCounter++;
-		//}
-
-		//private void level_LevelComplete(object sender, EventArgs e)
-		//{
-		//	createNewLevel();
-		//}
 
 		protected override void LoadContent()
         {
@@ -70,14 +52,11 @@ namespace Labyrinthian
 			}
 
 			this.screen.Update(gameTime);
-
-			//this.currentlevel.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
 			this.GraphicsDevice.Clear(Color.CornflowerBlue);
-			//this.currentlevel.Draw(gameTime, this.spriteBatch);
 			this.screen.Draw(gameTime, this.spriteBatch);
 			// UI
 			this.spriteBatch.Begin();

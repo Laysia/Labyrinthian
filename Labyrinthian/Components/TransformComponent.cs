@@ -1,7 +1,7 @@
 ﻿using CHMonoTools.ECS;
 using Microsoft.Xna.Framework;
 
-namespace Labyrinthian.Components
+namespace Labyrinthian
 {
 	class TransformComponent : IComponent
 	{
