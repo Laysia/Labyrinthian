@@ -29,12 +29,25 @@ namespace Labyrinthian
 
 		private void setupGame()
 		{
+			Random rng = new Random();
+
 			this.EntityContainer = new EntityContainer();
 			this.LightingGameSystem = new LightingGameSystem(this.EntityContainer, this.Game.GraphicsDevice);
 			this.RenderGameSystem = new RenderGameSystem(this.EntityContainer);
 			this.UpdateGameSystem = new UpdateGameSystem(this.EntityContainer);
 
 			this.EntityContainer.Add(PlayerFactory.CreatePlayerEntity());
+			for (int i = 0; i < 10; i++)
+			{
+				for (int j = 0; j < 10; j++)
+				{
+					if (rng.NextDouble() > 0.9)
+					{
+						Entity torch = TorchFactory.CreateTorch(50, new Vector2(i * 64 + 16, j * 64 + 16));
+						this.EntityContainer.Add(torch);
+					}
+				}
+			}
 		}
 
 		private void window_ClientSizeChanged(object sender, System.EventArgs e)
@@ -45,7 +58,7 @@ namespace Labyrinthian
 		public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
 			this.LightingGameSystem.DrawRenderTarget(gameTime, spriteBatch);
-
+			this.Game.GraphicsDevice.Clear(Color.CornflowerBlue);
 			this.RenderGameSystem.Draw(gameTime, spriteBatch);
 
 			this.LightingGameSystem.Draw(gameTime, spriteBatch);

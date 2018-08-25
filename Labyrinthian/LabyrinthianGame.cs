@@ -17,7 +17,7 @@ namespace Labyrinthian
 		//Level currentlevel;
 		int levelCounter = 0;
 		Screen screen;
-		internal static PositionComponent playerPosition { get; set; }
+		internal static PositionComponent PlayerPosition { get; set; }
 
         public LabyrinthianGame()
         {
@@ -83,10 +83,10 @@ namespace Labyrinthian
 			this.spriteBatch.Begin();
 			SpriteFont spriteFont = this.Content.Load<SpriteFont>(@"Fonts/Default");
 			this.spriteBatch.DrawString(spriteFont, $"Level: {this.levelCounter}", Vector2.One * 10, Color.White);
-			if (playerPosition != null)
+			if (PlayerPosition != null)
 			{
-				this.spriteBatch.DrawString(spriteFont, $"X: {playerPosition.Position.X}", Vector2.One * 10 + new Vector2(0, 20), Color.White);
-				this.spriteBatch.DrawString(spriteFont, $"Y: {playerPosition.Position.Y}", Vector2.One * 10 + new Vector2(0, 40), Color.White);
+				this.spriteBatch.DrawString(spriteFont, $"X: {PlayerPosition.Position.X}", Vector2.One * 10 + new Vector2(0, 20), Color.White);
+				this.spriteBatch.DrawString(spriteFont, $"Y: {PlayerPosition.Position.Y}", Vector2.One * 10 + new Vector2(0, 40), Color.White);
 			}
 			this.spriteBatch.End();
             base.Draw(gameTime);

@@ -11,7 +11,7 @@ namespace Labyrinthian
 {
 	public class Torch : IGameObject, IPosition
 	{
-		private SpriteAnimator animator = new SpriteAnimator(AnimationRectangles) { TimeBetweenAnimationInMs = 200 };
+		private SpriteAnimator animator = new SpriteAnimator(SpriteAnimator.TorchRectangles) { TimeBetweenAnimationInMs = 200 };
 		public Texture2D Texture;
 		public Vector2 Position { get; set; }
 
@@ -36,11 +36,5 @@ namespace Labyrinthian
 		public void Update(GameTime gameTime)
 		{
 		}
-
-		public static Dictionary<string, Rectangle[]> AnimationRectangles = new Dictionary<string, Rectangle[]>
-		{
-			{ "visible", new Rectangle[] { new Rectangle(0, 0, 10, 23), new Rectangle(10, 0, 10, 23), new Rectangle(20, 0, 10, 23) } },
-			{ "invisible", new Rectangle[] { new Rectangle(0, 0, 1, 1) } }
-		};
 	}
 }

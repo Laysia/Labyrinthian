@@ -61,12 +61,14 @@
   <ItemGroup>
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Components\AnimatedSpriteComponent.cs" />
     <Compile Include="Components\CameraComponent.cs" />
     <Compile Include="Components\LightSourceComponent.cs" />
     <Compile Include="Components\PhysicsHitboxComponent.cs" />
-    <Compile Include="Components\PlayerDrawComponent.cs" />
     <Compile Include="Components\PlayerInputComponent.cs" />
+    <Compile Include="Components\PlayerSpriteComponent.cs" />
     <Compile Include="Components\PositionComponent.cs" />
+    <Compile Include="Components\TorchSpriteComponent.cs" />
     <Compile Include="Components\TransformComponent.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="IHitbox.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Maze\MazeLayer.cs" />
     <Compile Include="PhysicsSystem.cs" />
     <Compile Include="Prefabs\PlayerFactory.cs" />
+    <Compile Include="Prefabs\TorchFactory.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="Systems\DrawableGameSystem.cs" />
     <Compile Include="Systems\LightingGameSystem.cs" />
