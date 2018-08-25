@@ -8,7 +8,6 @@ namespace Labyrinthian
 {
 	public class LightingSystem : IGameObject
 	{
-		public Texture2D LightTexture;
 		public Texture2D BlackTexture;
 
 		private GraphicsDevice graphicsDevice;

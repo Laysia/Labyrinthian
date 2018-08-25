@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labyrinthian", "Labyrinthia
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CHMonoTools", "..\CHMonoTools\CHMonoTools\CHMonoTools.csproj", "{7E16DCEF-905C-4916-9B20-FB7BA38B04AD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CHMonoToolsTests", "..\CHMonoTools\CHMonoToolsTests\CHMonoToolsTests.csproj", "{166FA8DA-B7CE-4B57-8878-841067F223E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7E16DCEF-905C-4916-9B20-FB7BA38B04AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E16DCEF-905C-4916-9B20-FB7BA38B04AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E16DCEF-905C-4916-9B20-FB7BA38B04AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166FA8DA-B7CE-4B57-8878-841067F223E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166FA8DA-B7CE-4B57-8878-841067F223E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166FA8DA-B7CE-4B57-8878-841067F223E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166FA8DA-B7CE-4B57-8878-841067F223E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

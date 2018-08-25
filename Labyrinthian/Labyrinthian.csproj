@@ -61,6 +61,14 @@
   <ItemGroup>
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Components\CameraComponent.cs" />
+    <Compile Include="Components\LightSourceComponent.cs" />
+    <Compile Include="Components\PhysicsHitboxComponent.cs" />
+    <Compile Include="Components\PlayerDrawComponent.cs" />
+    <Compile Include="Components\PlayerInputComponent.cs" />
+    <Compile Include="Components\PositionComponent.cs" />
+    <Compile Include="Components\TransformComponent.cs" />
+    <Compile Include="Config\Config.cs" />
     <Compile Include="IHitbox.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Lighting\LightSource.cs" />
@@ -68,6 +76,12 @@
     <Compile Include="Maze\MazeGenerator.cs" />
     <Compile Include="Maze\MazeLayer.cs" />
     <Compile Include="PhysicsSystem.cs" />
+    <Compile Include="Prefabs\PlayerFactory.cs" />
+    <Compile Include="Screen.cs" />
+    <Compile Include="Systems\DrawableGameSystem.cs" />
+    <Compile Include="Systems\LightingGameSystem.cs" />
+    <Compile Include="Systems\RenderGameSystem.cs" />
+    <Compile Include="Systems\UpdateGameSystem.cs" />
     <Compile Include="Tiles\GroundTile.cs" />
     <Compile Include="IPosition.cs" />
     <Compile Include="LabyrinthianGame.cs" />
@@ -163,6 +177,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -37,6 +37,7 @@ namespace Labyrinthian
 
 		public void Update(GameTime gameTime)
 		{
+			this.spriteAnimator.Update(gameTime);
 			float percentage = (float)gameTime.ElapsedGameTime.TotalSeconds * 60.0f;
 			this.isWalking = true;
 			var state = Keyboard.GetState();
@@ -105,7 +106,7 @@ namespace Labyrinthian
 						break;
 				}
 			}
-			spriteBatch.Draw(this.Texture, this.Position - this.spriteAnimator.GetSourceRectangle(gameTime, animationName).Size.ToVector2() / 2, this.spriteAnimator.GetSourceRectangle(gameTime, animationName), Color.White);
+			spriteBatch.Draw(this.Texture, this.Position - this.spriteAnimator.GetSourceRectangle(animationName).Size.ToVector2() / 2, this.spriteAnimator.GetSourceRectangle(animationName), Color.White);
 		}
 
 		public static Dictionary<string, Rectangle[]> AnimationRectangles = new Dictionary<string, Rectangle[]>

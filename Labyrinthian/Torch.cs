@@ -24,7 +24,8 @@ namespace Labyrinthian
 
 		public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-			Rectangle sourceRectangle = this.animator.GetSourceRectangle(gameTime, "visible");
+			this.animator.Update(gameTime);
+			Rectangle sourceRectangle = this.animator.GetSourceRectangle("visible");
 			spriteBatch.Draw(this.Texture, this.Position - new Vector2(5, 5), sourceRectangle, Color.White);
 		}
 

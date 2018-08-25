@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Labyrinthian
 {
-	class SpriteAnimator
+	class SpriteAnimator : CHMonoTools.IUpdateable
 	{
 		private Dictionary<string, Rectangle[]> animation;
 		public double TimeBetweenAnimationInMs { get; set; } = 200.0;
@@ -16,7 +16,7 @@ namespace Labyrinthian
 			this.animation = animation;
 		}
 
-		public Rectangle GetSourceRectangle(GameTime gameTime, string spriteName)
+		public Rectangle GetSourceRectangle(string spriteName)
 		{
 			if (this.lastSpriteName != spriteName)
 			{
@@ -27,7 +27,7 @@ namespace Labyrinthian
 			}
 
 			var sprites = this.animation[spriteName];
-			this.timeSinceLastAnimationSwitch += gameTime.ElapsedGameTime.TotalMilliseconds;
+			
 			if (this.timeSinceLastAnimationSwitch - this.TimeBetweenAnimationInMs < 0)
 			{
 				return sprites[this.lastSpriteCount];
@@ -50,6 +50,11 @@ namespace Labyrinthian
 			}
 
 
+		}
+
+		public void Update(GameTime gameTime)
+		{
+			this.timeSinceLastAnimationSwitch += gameTime.ElapsedGameTime.TotalMilliseconds;
 		}
 	}
 }

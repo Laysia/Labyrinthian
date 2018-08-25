@@ -1,14 +1,20 @@
-﻿using CHMonoTools;
+﻿using CHMonoTools.ECS;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Labyrinthian
+namespace Labyrinthian.Components
 {
-	public class LightSource : CHMonoTools.IDrawable
+	class LightSourceComponent : IDrawableComponent
 	{
-		public IPosition Position { get; set; }
+		static Random rng = new Random();
+
+
+		public Entity Entity { get; set; }
+
+		private PositionComponent entityPosition;
+
 		public static Texture2D CircularLightTexture { get; set; } = ProgrammerArt.CreateGradientBlackCircle(100, 1.0);
 		public static List<Texture2D> CircularLightTextureAlternate { get; set; } = new List<Texture2D>()
 		{
@@ -19,19 +25,17 @@ namespace Labyrinthian
 			ProgrammerArt.CreateGradientBlackCircle(100, .6),
 			ProgrammerArt.CreateGradientBlackCircle(100, .9)
 		};
+
 		public int Radius { get; set; }
 		public bool Flickering { get; set; } = false;
 
 		private double flickerTimerInMS = 40.0;
 		private double flickerTimerProgress = 0.0;
 		private Texture2D currentTexture;
-		bool isFlickering = false;
+		private bool isFlickering = false;
 
-		static Random rng = new Random();
-
-		public LightSource(IPosition Position, int Radius)
+		public LightSourceComponent(int Radius)
 		{
-			this.Position = Position;
 			this.Radius = Radius;
 			this.currentTexture = CircularLightTexture;
 		}
@@ -57,14 +61,29 @@ namespace Labyrinthian
 					this.currentTexture = CircularLightTextureAlternate[rng.Next(0, CircularLightTextureAlternate.Count - 1)];
 				}
 			}
-				
+			if (this.entityPosition != null)
+			{
+				spriteBatch.Draw(
+					this.currentTexture,
+					new Rectangle((int)this.entityPosition.Position.X - this.Radius, (int)this.entityPosition.Position.Y - this.Radius, 2 * this.Radius, 2 * this.Radius),
+					Color.White);
+			}
+		}
 
+		public void Initialize()
+		{
+		}
 
-			Vector2 position = this.Position.Position;
-			spriteBatch.Draw(
-				this.currentTexture, 
-				new Rectangle((int)position.X - this.Radius, (int)position.Y - this.Radius, 2 * this.Radius, 2 * this.Radius),
-				Color.White);
+		public void Update(GameTime gameTime)
+		{
+			if (this.entityPosition == null || this.entityPosition.Entity != this.Entity)
+			{
+				this.entityPosition = this.Entity?.GetComponent<PositionComponent>();
+				if (this.entityPosition == null)
+				{
+					return;
+				}
+			}
 		}
 	}
 }
