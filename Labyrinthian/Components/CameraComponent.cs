@@ -69,6 +69,11 @@ namespace Labyrinthian
 			}
 		}
 
+		public CameraComponent(Viewport viewport)
+		{
+			this.Viewport = viewport;
+		}
+
 		public override void Update(GameTime gameTime)
 		{
 			if (this.entityPosition != null && this.EntityPosition.Position != this.EntityPosition.LastTickPosition)
@@ -90,7 +95,7 @@ namespace Labyrinthian
 		{
 			if (e.Component is PositionComponent p)
 			{
-				this.entityPosition = p;
+				this.EntityPosition = p;
 			}
 			base.Entity_ComponentAdded(sender, e);
 		}
@@ -98,7 +103,7 @@ namespace Labyrinthian
 		{
 			if (e.Component == this.entityPosition)
 			{
-				this.entityPosition = null;
+				this.EntityPosition = null;
 			}
 			base.Entity_ComponentRemoved(sender, e);
 		}

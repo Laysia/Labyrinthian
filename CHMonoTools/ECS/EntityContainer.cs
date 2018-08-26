@@ -26,6 +26,16 @@ namespace CHMonoTools.ECS
 			return false;
 		}
 
+		public void Clear()
+		{
+			for (int i = this.entities.Count - 1; i >= 0; --i)
+			{
+				var entity = this.entities[i];
+				this.entities.Remove(entity);
+				this.EntityRemoved?.Invoke(this, new EntityEventArgs(entity));
+			}
+		}
+
 		public IReadOnlyList<Entity> GetEntities()
 		{
 			return this.entities;

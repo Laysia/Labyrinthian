@@ -7,6 +7,7 @@ namespace Labyrinthian
 	class SpriteComponent : Component, IDrawableComponent
 	{
 		public Texture2D Texture { get; set; }
+		public Color Color { get; set; } = Color.White;
 		protected PositionComponent entityPosition;
 		protected Rectangle SourceRectangle { get; set; }
 
@@ -27,7 +28,7 @@ namespace Labyrinthian
 			{
 				return;
 			}
-			spriteBatch.Draw(this.Texture, this.entityPosition.Position - this.SourceRectangle.Size.ToVector2() / 2, this.SourceRectangle, Color.White);
+			spriteBatch.Draw(this.Texture, this.entityPosition.Position - this.SourceRectangle.Size.ToVector2() / 2, this.SourceRectangle, this.Color);
 		}
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{

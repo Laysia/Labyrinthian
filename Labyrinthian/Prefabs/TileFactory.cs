@@ -28,5 +28,26 @@ namespace Labyrinthian.Prefabs
 
 			return Entity;
 		}
+
+		public static Entity CreateStartTile(Vector2 Position)
+		{
+			var Entity = new Entity();
+			Entity.Add(new PositionComponent(Position));
+			Entity.Add(new SpriteComponent(LabyrinthianGame.Game.Content.Load<Texture2D>(@"Textures/GroundSheet"), groundTileSource) { Color = Color.Green });
+
+			return Entity;
+		}
+
+		public static Entity CreateEndTile(Vector2 Position)
+		{
+			var Entity = new Entity();
+			Entity.Add(new PositionComponent(Position));
+			Entity.Add(new SpriteComponent(LabyrinthianGame.Game.Content.Load<Texture2D>(@"Textures/GroundSheet"), groundTileSource) { Color = Color.Red });
+			Entity.Add(new PhysicsHitboxComponent(16, 16) { CanCollide = false });
+			Entity.Add(new LevelCompleteEventComponent());
+
+
+			return Entity;
+		}
 	}
 }

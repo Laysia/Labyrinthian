@@ -16,6 +16,9 @@ namespace Labyrinthian
 		Screen screen;
 		internal static PositionComponent PlayerPosition { get; set; }
 
+		public static int CamerasAdded = 0;
+		public static int CamerasRemoved = 0;
+
         public LabyrinthianGame()
         {
 			this.graphics = new GraphicsDeviceManager(this);
@@ -74,6 +77,8 @@ namespace Labyrinthian
 				this.spriteBatch.DrawString(spriteFont, $"X: {PlayerPosition.Position.X}", Vector2.One * 10 + new Vector2(0, 20), Color.White);
 				this.spriteBatch.DrawString(spriteFont, $"Y: {PlayerPosition.Position.Y}", Vector2.One * 10 + new Vector2(0, 40), Color.White);
 			}
+			this.spriteBatch.DrawString(spriteFont, $"Level: {LevelGameSystem.LevelCount}", Vector2.One * 10 + new Vector2(0, 80), Color.White);
+
 			this.spriteBatch.End();
             base.Draw(gameTime);
         }

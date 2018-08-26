@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="Components\AnimatedSpriteComponent.cs" />
     <Compile Include="Components\CameraComponent.cs" />
+    <Compile Include="Components\LevelCompleteEventComponent.cs" />
+    <Compile Include="Components\LevelCompleterComponent.cs" />
     <Compile Include="Components\LightSourceComponent.cs" />
     <Compile Include="Components\PhysicsHitboxComponent.cs" />
     <Compile Include="Components\PlayerInputComponent.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Components\SpriteAnimator.cs" />
     <Compile Include="Systems\DrawableGameSystem.cs" />
+    <Compile Include="Systems\LevelGameSystem.cs" />
     <Compile Include="Systems\LightingGameSystem.cs" />
     <Compile Include="Systems\PhysicsGameSystem.cs" />
     <Compile Include="Systems\RenderGameSystem.cs" />

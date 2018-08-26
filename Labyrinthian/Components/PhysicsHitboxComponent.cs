@@ -11,6 +11,7 @@ namespace Labyrinthian
 		public TransformComponent Transform { get; private set; }
 		private Texture2D rectangleTexture;
 
+		public bool CanCollide { get; set; } = true;
 
 		public int Width { get; set; }
 		public int Height { get; set; }

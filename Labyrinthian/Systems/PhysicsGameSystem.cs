@@ -7,9 +7,8 @@ namespace Labyrinthian
 {
 	class PhysicsGameSystem : GameSystem
 	{
-		private HashSet<PhysicsHitboxComponent> staticBodies = new HashSet<PhysicsHitboxComponent>();
 		private HashSet<PhysicsHitboxComponent> movingBodies = new HashSet<PhysicsHitboxComponent>();
-		//private HashSet<PhysicsHitboxComponent> allBodies = new HashSet<PhysicsHitboxComponent>();
+		private HashSet<PhysicsHitboxComponent> allBodies = new HashSet<PhysicsHitboxComponent>();
 
 		public PhysicsGameSystem(EntityContainer entityContainer) : base(entityContainer)
 		{
@@ -19,6 +18,10 @@ namespace Labyrinthian
 		{
 			foreach (var mover in this.movingBodies)
 			{
+				if (!mover.CanCollide)
+				{
+					continue;
+				}
 				if (mover.EntityPosition == null)
 				{
 					continue;
@@ -28,46 +31,85 @@ namespace Labyrinthian
 				{
 					continue;
 				}
-				TransformComponent transformComponent = mover.Entity.GetComponent<TransformComponent>();
-				Vector2 moveDirection = transformComponent.Transform.Translation.ToVector2();
-				Rectangle nextHitbox = currentHitbox.Move(moveDirection);
-
-				foreach (var staticBody in this.staticBodies)
+				TransformComponent transformComponent = mover.Transform;
+				Vector2 movement = transformComponent.Transform.Translation.ToVector2();
+				if (movement == Vector2.Zero)
 				{
-					Rectangle otherCurrentHitbox = staticBody.Hitbox;
+					continue;
+				}
+				Rectangle nextHitbox = currentHitbox.Move(movement);
+
+				foreach (var body in this.allBodies)
+				{
+					if (!body.CanCollide || body == mover)
+					{
+						continue;
+					}
+
+					Rectangle otherCurrentHitbox = body.Hitbox;
 
 					if (otherCurrentHitbox.Size == Point.Zero)
 					{
 						continue;
 					}
-					var intersection = Rectangle.Intersect(nextHitbox, otherCurrentHitbox);
-
-					if (!intersection.IsEmpty)
+					if (body.Transform == null || body.Transform.Transform.Translation == Vector3.Zero)
 					{
-						if (currentHitbox.IsBelow(otherCurrentHitbox))
-						{
-							// move down
-							transformComponent.Transform = transformComponent.Transform * Matrix.CreateTranslation(0, intersection.Height + 1, 0);
-						}
-						else if (currentHitbox.IsAbove(otherCurrentHitbox))
-						{
-							// move up
-							transformComponent.Transform = transformComponent.Transform * Matrix.CreateTranslation(0, -intersection.Height - 1, 0);
-						}
+						// it can't move or is not moving, so it will not change position in case of a collision
+						var intersection = Rectangle.Intersect(nextHitbox, otherCurrentHitbox);
 
-						if (currentHitbox.IsLeftOf(otherCurrentHitbox))
+						if (!intersection.IsEmpty)
 						{
-							// move left
-							transformComponent.Transform = transformComponent.Transform * Matrix.CreateTranslation(-intersection.Width - 1, 0, 0);
-						}
-						else if (currentHitbox.IsRightOf(otherCurrentHitbox))
-						{
-							// move right
-							transformComponent.Transform = transformComponent.Transform * Matrix.CreateTranslation(intersection.Width + 1, 0, 0);
-						}
+							if (currentHitbox.IsBelow(otherCurrentHitbox))
+							{
+								// move down
+								transformComponent.Transform = transformComponent.Transform * Matrix.CreateTranslation(0, intersection.Height + 1, 0);
+							}
+							else if (currentHitbox.IsAbove(otherCurrentHitbox))
+							{
+								// move up
+								transformComponent.Transform = transformComponent.Transform * Matrix.CreateTranslation(0, -intersection.Height - 1, 0);
+							}
 
-						moveDirection = transformComponent.Transform.Translation.ToVector2();
-						nextHitbox = currentHitbox.Move(moveDirection);
+							if (currentHitbox.IsLeftOf(otherCurrentHitbox))
+							{
+								// move left
+								transformComponent.Transform = transformComponent.Transform * Matrix.CreateTranslation(-intersection.Width - 1, 0, 0);
+							}
+							else if (currentHitbox.IsRightOf(otherCurrentHitbox))
+							{
+								// move right
+								transformComponent.Transform = transformComponent.Transform * Matrix.CreateTranslation(intersection.Width + 1, 0, 0);
+							}
+
+							movement = transformComponent.Transform.Translation.ToVector2();
+							nextHitbox = currentHitbox.Move(movement);
+						}
+					}
+					else
+					{
+						Vector2 otherMovement = body.Transform.Transform.Translation.ToVector2();
+						Rectangle nextOtherHitbox = otherCurrentHitbox.Move(otherMovement);
+						var intersection = Rectangle.Intersect(nextHitbox, nextOtherHitbox);
+
+						if (!intersection.IsEmpty)
+						{
+							float collisionLengthSquared = intersection.Size.ToVector2().LengthSquared();
+							float MovementLength = movement.LengthSquared();
+							float otherMovementLength = otherMovement.LengthSquared();
+
+							float factor = MovementLength / (MovementLength + otherMovementLength);
+
+							Vector2 displacement = movement * -1 * factor;
+							Vector2 otherDisplacement = otherMovement * -1 * (1 - factor);
+
+							transformComponent.Transform = transformComponent.Transform * Matrix.CreateTranslation(displacement.ToVector3());
+							body.Transform.Transform = body.Transform.Transform * Matrix.CreateTranslation(otherDisplacement.ToVector3());
+
+							movement = transformComponent.Transform.Translation.ToVector2();
+							nextHitbox = currentHitbox.Move(movement);
+							otherMovement = body.Transform.Transform.Translation.ToVector2();
+							nextOtherHitbox = otherCurrentHitbox.Move(otherMovement);
+						}
 					}
 				}
 				foreach (var movingBody in this.movingBodies)
@@ -81,7 +123,7 @@ namespace Labyrinthian
 					{
 						continue;
 					}
-					TransformComponent otherTransformComponent = mover.Entity.GetComponent<TransformComponent>();
+					TransformComponent otherTransformComponent = movingBody.Entity.GetComponent<TransformComponent>();
 					Matrix otherMoveDirection = otherTransformComponent.Transform;
 					Rectangle nextOtherHitbox = movingBody.Hitbox.Move(otherMoveDirection.Translation.ToVector2());
 
@@ -104,18 +146,13 @@ namespace Labyrinthian
 				{
 					this.movingBodies.Add(p);
 				}
-				else
-				{
-					this.staticBodies.Add(p);
-				}
-				//this.allBodies.Add(p);
+				this.allBodies.Add(p);
 			}
 			else if (e.Component is TransformComponent t)
 			{
 				var hitbox = sender.GetComponent<PhysicsHitboxComponent>();
-				if (hitbox != null && this.staticBodies.Contains(hitbox))
+				if (hitbox != null)
 				{
-					this.staticBodies.Remove(hitbox);
 					this.movingBodies.Add(hitbox);
 				}
 			}
@@ -125,9 +162,8 @@ namespace Labyrinthian
 		{
 			if (e.Component is PhysicsHitboxComponent p)
 			{
-				this.staticBodies.Remove(p);
 				this.movingBodies.Remove(p);
-				//this.allBodies.Remove(p);
+				this.allBodies.Remove(p);
 			}
 			else if (e.Component is TransformComponent t)
 			{
@@ -135,7 +171,6 @@ namespace Labyrinthian
 				if (hitbox != null && this.movingBodies.Contains(hitbox))
 				{
 					this.movingBodies.Remove(hitbox);
-					this.staticBodies.Add(hitbox);
 				}
 			}
 		}
