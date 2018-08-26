@@ -152,12 +152,6 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CHMonoTools\CHMonoTools\CHMonoTools.csproj">
-      <Project>{7e16dcef-905c-4916-9b20-fb7ba38b04ad}</Project>
-      <Name>CHMonoTools</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7 %28x86 and x64%29</ProductName>
