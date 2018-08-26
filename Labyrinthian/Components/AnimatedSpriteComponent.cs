@@ -1,6 +1,4 @@
-﻿using System;
-using CHMonoTools.ECS;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Labyrinthian
@@ -23,11 +21,6 @@ namespace Labyrinthian
 		protected virtual Rectangle GetSourceRectangle()
 		{
 			return new Rectangle();
-		}
-
-		public override void Initialize()
-		{
-			base.Initialize();
 		}
 
 		public override void Update(GameTime gameTime)

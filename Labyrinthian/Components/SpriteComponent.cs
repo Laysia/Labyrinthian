@@ -4,10 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Labyrinthian
 {
-	class SpriteComponent : IDrawableComponent
+	class SpriteComponent : Component, IDrawableComponent
 	{
-		public Entity Entity { get; set; }
-
 		public Texture2D Texture { get; set; }
 		protected PositionComponent entityPosition;
 		protected Rectangle SourceRectangle { get; set; }
@@ -25,23 +23,27 @@ namespace Labyrinthian
 
 		public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-			if (this.entityPosition == null || this.entityPosition.Entity != this.Entity)
+			if (this.entityPosition == null)
 			{
-				this.entityPosition = this.Entity?.GetComponent<PositionComponent>();
-				if (this.entityPosition == null)
-				{
-					return;
-				}
+				return;
 			}
 			spriteBatch.Draw(this.Texture, this.entityPosition.Position - this.SourceRectangle.Size.ToVector2() / 2, this.SourceRectangle, Color.White);
 		}
-
-		public virtual void Initialize()
+		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
+			if (e.Component is PositionComponent p)
+			{
+				this.entityPosition = p;
+			}
+			base.Entity_ComponentAdded(sender, e);
 		}
-
-		public virtual void Update(GameTime gameTime)
+		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
 		{
+			if (e.Component == this.entityPosition)
+			{
+				this.entityPosition = null;
+			}
+			base.Entity_ComponentRemoved(sender, e);
 		}
 	}
 }

@@ -1,15 +1,13 @@
 ﻿using CHMonoTools.ECS;
 using Microsoft.Xna.Framework;
-using System;
 
 namespace Labyrinthian
 {
-	class PositionComponent : IComponent
+	class PositionComponent : Component
 	{
-		public Vector2 LastTickPosition { get; private set; }
-
 		private TransformComponent transformComponent;
 
+		public Vector2 LastTickPosition { get; private set; }
 		public Vector2 Position { get; set; }
 
 		public PositionComponent() { }
@@ -20,14 +18,7 @@ namespace Labyrinthian
 			this.LastTickPosition = Position;
 		}
 
-		public Entity Entity { get; set; }
-
-		public void Initialize()
-		{
-
-		}
-
-		public void Update(GameTime gameTime)
+		public override void Update(GameTime gameTime)
 		{
 			this.LastTickPosition = this.Position;
 
@@ -42,6 +33,24 @@ namespace Labyrinthian
 
 			this.Position = Vector2.Transform(this.Position, this.transformComponent.Transform);
 			this.transformComponent.Transform = Matrix.Identity;
+			base.Update(gameTime);
+		}
+
+		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
+		{
+			if (e.Component is TransformComponent t)
+			{
+				this.transformComponent = t;
+			}
+			base.Entity_ComponentAdded(sender, e);
+		}
+		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
+		{
+			if (e.Component == this.transformComponent)
+			{
+				this.transformComponent = null;
+			}
+			base.Entity_ComponentRemoved(sender, e);
 		}
 	}
 }

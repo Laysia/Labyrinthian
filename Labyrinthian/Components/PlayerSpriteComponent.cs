@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CHMonoTools.ECS;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,7 +7,6 @@ namespace Labyrinthian
 	class PlayerSpriteComponent : AnimatedSpriteComponent
 	{
 		private PlayerInputComponent entityInput;
-		private PhysicsHitboxComponent entityHitbox;
 
 		public PlayerSpriteComponent(Texture2D texture, SpriteAnimator spriteAnimator) : base(texture, spriteAnimator)
 		{
@@ -20,36 +15,13 @@ namespace Labyrinthian
 		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
 			base.Draw(gameTime, spriteBatch);
-
-			if (this.entityHitbox == null)
-			{
-				this.entityHitbox = this.Entity?.GetComponent<PhysicsHitboxComponent>();
-				if (this.entityHitbox == null)
-				{
-					return;
-				}
-			}
-
-
 		}
 
 		protected override Rectangle GetSourceRectangle()
 		{
-			if (this.entityInput == null)
+			if (this.entityInput == null || this.entityInput == null)
 			{
-				this.entityInput = this.Entity?.GetComponent<PlayerInputComponent>();
-				if (this.entityInput == null)
-				{
-					return new Rectangle();
-				}
-			}
-			if (this.entityPosition == null)
-			{
-				this.entityPosition = this.Entity?.GetComponent<PositionComponent>();
-				if (this.entityPosition == null)
-				{
-					return new Rectangle();
-				}
+				return Rectangle.Empty;
 			}
 
 			string animationName = "";
@@ -91,6 +63,23 @@ namespace Labyrinthian
 			}
 			Rectangle sourceRectangle = this.SpriteAnimator.GetSourceRectangle(animationName);
 			return sourceRectangle;
+		}
+
+		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
+		{
+			if (e.Component is PlayerInputComponent p)
+			{
+				this.entityInput = p;
+			}
+			base.Entity_ComponentAdded(sender, e);
+		}
+		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
+		{
+			if (e.Component == this.entityInput)
+			{
+				this.entityInput = null;
+			}
+			base.Entity_ComponentRemoved(sender, e);
 		}
 	}
 }

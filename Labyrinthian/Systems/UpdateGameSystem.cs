@@ -15,7 +15,7 @@ namespace Labyrinthian
 		 */
 
 		List<PlayerInputComponent> input = new List<PlayerInputComponent>();
-		List<IComponent> components = new List<IComponent>();
+		List<Component> components = new List<Component>();
 		List<PositionComponent> positions = new List<PositionComponent>();
 
 		public UpdateGameSystem(EntityContainer entityContainer) : base(entityContainer)
@@ -59,7 +59,7 @@ namespace Labyrinthian
 			}
 			else
 			{
-				this.components.Add(e.Component);
+				this.components.Add((CHMonoTools.ECS.Component)e.Component);
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace Labyrinthian
 			}
 			else
 			{
-				this.components.Remove(e.Component);
+				this.components.Remove((CHMonoTools.ECS.Component)e.Component);
 			}
 		}
 	}

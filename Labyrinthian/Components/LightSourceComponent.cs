@@ -6,12 +6,9 @@ using System.Collections.Generic;
 
 namespace Labyrinthian
 {
-	class LightSourceComponent : IDrawableComponent
+	class LightSourceComponent : Component, IDrawableComponent
 	{
 		static Random rng = new Random();
-
-
-		public Entity Entity { get; set; }
 
 		private PositionComponent entityPosition;
 
@@ -69,21 +66,21 @@ namespace Labyrinthian
 					Color.White);
 			}
 		}
-
-		public void Initialize()
+		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-		}
-
-		public void Update(GameTime gameTime)
-		{
-			if (this.entityPosition == null || this.entityPosition.Entity != this.Entity)
+			if (e.Component is PositionComponent p)
 			{
-				this.entityPosition = this.Entity?.GetComponent<PositionComponent>();
-				if (this.entityPosition == null)
-				{
-					return;
-				}
+				this.entityPosition = p;
 			}
+			base.Entity_ComponentAdded(sender, e);
+		}
+		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
+		{
+			if (e.Component == this.entityPosition)
+			{
+				this.entityPosition = null;
+			}
+			base.Entity_ComponentRemoved(sender, e);
 		}
 	}
 }

@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Labyrinthian
 {
-	class PhysicsHitboxComponent : IDrawableComponent
+	class PhysicsHitboxComponent : Component, IDrawableComponent
 	{
 		public static bool IsHitboxVisible {get; set;} = false;
-		public Entity Entity { get; set; }
 		public PositionComponent EntityPosition { get; set; }
+		public TransformComponent Transform { get; private set; }
 		private Texture2D rectangleTexture;
 
 
@@ -18,7 +18,14 @@ namespace Labyrinthian
 		{
 			get
 			{
-				return new Rectangle(this.EntityPosition?.Position.ToPoint() - new Point(this.Width / 2, this.Height / 2) ?? Vector2.Zero.ToPoint(), new Point(this.Width, this.Height));
+				if (this.EntityPosition == null)
+				{
+					return Rectangle.Empty;
+				}
+				else
+				{
+					return new Rectangle(this.EntityPosition.Position.ToPoint() - new Point(this.Width / 2, this.Height / 2), new Point(this.Width, this.Height));
+				}
 			}
 		}
 
@@ -26,25 +33,8 @@ namespace Labyrinthian
 		{
 			this.Width = Width;
 			this.Height = Height;
-			this.EntityPosition = this.Entity?.GetComponent<PositionComponent>();
 			this.rectangleTexture = ProgrammerArt.WhiteOutlinedRectangle;
 
-		}
-
-		public void Initialize()
-		{
-		}
-
-		public void Update(GameTime gameTime)
-		{
-			if (this.EntityPosition == null || this.EntityPosition.Entity != this.Entity)
-			{
-				this.EntityPosition = this.Entity?.GetComponent<PositionComponent>();
-				if (this.EntityPosition == null)
-				{
-					return;
-				}
-			}
 		}
 
 		public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -53,6 +43,32 @@ namespace Labyrinthian
 			{
 				spriteBatch.Draw(this.rectangleTexture, this.Hitbox, Color.White);
 			}
+		}
+
+		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
+		{
+			if (e.Component is PositionComponent p)
+			{
+				this.EntityPosition = p;
+			}
+			else if (e.Component is TransformComponent t)
+			{
+				this.Transform = t;
+			}
+			base.Entity_ComponentAdded(sender, e);
+		}
+
+		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
+		{
+			if (e.Component is PositionComponent p)
+			{
+				this.EntityPosition = null;
+			}
+			else if (e.Component is TransformComponent t)
+			{
+				this.Transform = null;
+			}
+			base.Entity_ComponentRemoved(sender, e);
 		}
 	}
 }

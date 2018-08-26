@@ -4,10 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Labyrinthian
 {
-	class CameraComponent : IComponent
+	class CameraComponent : Component
 	{
-		public Entity Entity { get; set; }
-
 		private PositionComponent entityPosition;
 
 		public Viewport Viewport
@@ -71,38 +69,38 @@ namespace Labyrinthian
 			}
 		}
 
-		public void Initialize()
+		public override void Update(GameTime gameTime)
 		{
-		}
-
-		public void Update(GameTime gameTime)
-		{
-			if (this.EntityPosition == null || this.EntityPosition.Entity != this.Entity)
-			{
-				this.EntityPosition = this.Entity?.GetComponent<PositionComponent>();
-				if (this.EntityPosition == null)
-				{
-					return;
-				}
-			}
-
-			if (this.EntityPosition.Position != this.EntityPosition.LastTickPosition)
+			if (this.entityPosition != null && this.EntityPosition.Position != this.EntityPosition.LastTickPosition)
 			{
 				updateCamera();
 			}
+			base.Update(gameTime);
 		}
 
 		private void updateCamera()
 		{
-			//this.transformationMatrix =
-			//	Matrix.CreateTranslation(new Vector3(-this.Position.Position.X, -this.Position.Position.Y, 0)) *
-			//	Matrix.CreateTranslation(new Vector3(x: this._viewportWidth / this.Zoom * 0.5f, y: this._viewportHeight / this.Zoom * 0.5f, z: 0)) *
-			//	Matrix.CreateScale(new Vector3(this.Zoom, this.Zoom, 1));
-
 			this.World = Matrix.CreateTranslation(Vector3.Negate(this.EntityPosition.Position.ToVector3()));
 			this.View = Matrix.CreateTranslation(new Vector3(x: this.Viewport.Width / this.Zoom * 0.5f, y: this.Viewport.Height / this.Zoom * 0.5f, z: 0))
 				* Matrix.CreateScale(new Vector3(this.Zoom, this.Zoom, 1));
 			this.TransformationMatrix = this.World * this.View;
+		}
+
+		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
+		{
+			if (e.Component is PositionComponent p)
+			{
+				this.entityPosition = p;
+			}
+			base.Entity_ComponentAdded(sender, e);
+		}
+		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
+		{
+			if (e.Component == this.entityPosition)
+			{
+				this.entityPosition = null;
+			}
+			base.Entity_ComponentRemoved(sender, e);
 		}
 	}
 }
