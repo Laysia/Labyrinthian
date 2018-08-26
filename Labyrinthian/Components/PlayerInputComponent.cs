@@ -7,8 +7,9 @@ namespace Labyrinthian
 	class PlayerInputComponent : IComponent
 	{
 		public Entity Entity { get; set; }
-		public Keys LastPressedMovementKey { get; private set; }
 		float speed = 2.0f;
+
+		public Orientation Orientation { get; private set; }
 
 		public void Initialize()
 		{
@@ -25,26 +26,33 @@ namespace Labyrinthian
 				var state = Keyboard.GetState();
 				if (state.IsKeyDown(Keys.W))
 				{
-					this.LastPressedMovementKey = Keys.W;
+					this.Orientation = Orientation.Up;
 					trans.Transform = trans.Transform * Matrix.CreateTranslation((new Vector2(0, -1) * this.speed * percentage).ToVector3());
 				}
 				else if (state.IsKeyDown(Keys.A))
 				{
-					this.LastPressedMovementKey = Keys.A;
+					this.Orientation = Orientation.Left;
 					trans.Transform = trans.Transform * Matrix.CreateTranslation((new Vector2(-1, 0) * this.speed * percentage).ToVector3());
 				}
 				else if (state.IsKeyDown(Keys.S))
 				{
-					this.LastPressedMovementKey = Keys.S;
-
+					this.Orientation = Orientation.Down;
 					trans.Transform = trans.Transform * Matrix.CreateTranslation((new Vector2(0, 1) * this.speed * percentage).ToVector3());
 				}
 				else if (state.IsKeyDown(Keys.D))
 				{
-					this.LastPressedMovementKey = Keys.D;
+					this.Orientation = Orientation.Right;
 					trans.Transform = trans.Transform * Matrix.CreateTranslation((new Vector2(1, 0) * this.speed * percentage).ToVector3());
 				}
 			}
 		}
+	}
+
+	public enum Orientation
+	{
+		Up,
+		Right,
+		Down,
+		Left
 	}
 }

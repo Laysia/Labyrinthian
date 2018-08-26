@@ -4,25 +4,43 @@ using System.Collections.Generic;
 
 namespace Labyrinthian
 {
-	/// <summary>
-	/// Ist das überhaupt nötig oder updates in den jeweliigen systemen aufrufen?
-	/// </summary>
 	class UpdateGameSystem : GameSystem
 	{
-		List<PositionComponent> positions = new List<PositionComponent>();
+		/*
+		 * Update Order:
+		 * 1. PlayerInput
+		 * 2. Everything else
+		 * 3. PhysicsSystem
+		 * 4. PositionComponents
+		 */
+
+		List<PlayerInputComponent> input = new List<PlayerInputComponent>();
 		List<IComponent> components = new List<IComponent>();
+		List<PositionComponent> positions = new List<PositionComponent>();
 
 		public UpdateGameSystem(EntityContainer entityContainer) : base(entityContainer)
 		{
 
 		}
 
-		public override void Update(GameTime gameTime)
+		public void StartUpdating(GameTime gameTime)
 		{
+			foreach (var input in this.input)
+			{
+				input.Update(gameTime);
+			}
 			foreach(var comp in this.components)
 			{
 				comp.Update(gameTime);
 			}
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+		}
+
+		public void EndUpdating(GameTime gameTime)
+		{
 			foreach (var pcomp in this.positions)
 			{
 				pcomp.Update(gameTime);
@@ -34,6 +52,10 @@ namespace Labyrinthian
 			if (e.Component is PositionComponent p)
 			{
 				this.positions.Add(p);
+			}
+			else if (e.Component is PlayerInputComponent i)
+			{
+				this.input.Add(i);
 			}
 			else
 			{

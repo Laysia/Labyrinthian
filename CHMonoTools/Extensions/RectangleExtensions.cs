@@ -12,24 +12,24 @@
 			return new Rectangle(rectangle.X + point.X, rectangle.Y + point.Y, rectangle.Width, rectangle.Height);
 		}
 
-		public static bool IsTopAboveBottom(this Rectangle rectangle, Rectangle other)
+		public static bool IsAbove(this Rectangle rectangle, Rectangle other)
 		{
-			return rectangle.Top < other.Bottom;
+			return rectangle.Bottom <= other.Top;
 		}
 
-		public static bool IsRightOfLeft(this Rectangle rectangle, Rectangle other)
+		public static bool IsRightOf(this Rectangle rectangle, Rectangle other)
 		{
-			return rectangle.Right > other.Left;
+			return rectangle.Left >= other.Right;
 		}
 
-		public static bool IsLeftOfRight(this Rectangle rectangle, Rectangle other)
+		public static bool IsLeftOf(this Rectangle rectangle, Rectangle other)
 		{
-			return rectangle.Left < other.Right;
+			return rectangle.Right <= other.Left;
 		}
 
-		public static bool IsBottomBelowTop(this Rectangle rectangle, Rectangle other)
+		public static bool IsBelow(this Rectangle rectangle, Rectangle other)
 		{
-			return rectangle.Bottom > other.Top;
+			return rectangle.Top >= other.Bottom;
 		}
 	}
 }

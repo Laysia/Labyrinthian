@@ -10,7 +10,21 @@ namespace Labyrinthian
 
 		private PositionComponent entityPosition;
 
-		public Viewport Viewport { get; set; }
+		public Viewport Viewport
+		{
+			get
+			{
+				return this.viewport;
+			}
+			set
+			{
+				this.viewport = value;
+				if (this.entityPosition != null)
+				{
+					updateCamera();
+				}
+			}
+		}
 
 		public Matrix TransformationMatrix { get; private set; }
 		public Matrix World { get; private set; }
@@ -22,6 +36,8 @@ namespace Labyrinthian
 		private const float zoomLowerLimit = .5f;
 
 		private float _zoom = 1.0f;
+		private Viewport viewport;
+
 		public float Zoom
 		{
 			get { return this._zoom; }
@@ -84,7 +100,7 @@ namespace Labyrinthian
 			//	Matrix.CreateScale(new Vector3(this.Zoom, this.Zoom, 1));
 
 			this.World = Matrix.CreateTranslation(Vector3.Negate(this.EntityPosition.Position.ToVector3()));
-			this.View =	Matrix.CreateTranslation(new Vector3(x: this.Viewport.Width / this.Zoom * 0.5f, y: this.Viewport.Height / this.Zoom * 0.5f, z: 0))
+			this.View = Matrix.CreateTranslation(new Vector3(x: this.Viewport.Width / this.Zoom * 0.5f, y: this.Viewport.Height / this.Zoom * 0.5f, z: 0))
 				* Matrix.CreateScale(new Vector3(this.Zoom, this.Zoom, 1));
 			this.TransformationMatrix = this.World * this.View;
 		}

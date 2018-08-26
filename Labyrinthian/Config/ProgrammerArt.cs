@@ -8,10 +8,11 @@ namespace Labyrinthian
 	public static class ProgrammerArt
 	{
 		public static Texture2D BlackPixel { get; private set; }
-
+		public static Texture2D WhiteOutlinedRectangle { get; private set; }
 		static ProgrammerArt()
 		{
 			BlackPixel = createBlackPixel();
+			WhiteOutlinedRectangle = CreateRectangleOutline(32, 32, Color.White);
 		}
 
 		private static Texture2D createBlackPixel()
@@ -56,6 +57,28 @@ namespace Labyrinthian
 			//{
 			//	texture.SaveAsPng(stream, texture.Width, texture.Height);
 			//}
+			return texture;
+		}
+
+		public static Texture2D CreateRectangleOutline(int width, int height, Color color)
+		{
+			Texture2D texture = new Texture2D(LabyrinthianGame.Game.GraphicsDevice, width, height);
+			Color[] data = new Color[width * height];
+			for (int y = 0; y < height; y++)
+			{
+				for (int x = 0; x < width; x++)
+				{
+					if (x < 2|| x > width - 3 || y < 2 || y > height - 3)
+					{
+						data[y * height + x] = color;
+					}
+					else
+					{
+						data[y * height + x] = Color.Transparent;
+					}
+				}
+			}
+			texture.SetData(data);
 			return texture;
 		}
 	}

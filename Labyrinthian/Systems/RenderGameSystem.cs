@@ -8,6 +8,7 @@ namespace Labyrinthian
 	class RenderGameSystem : DrawableGameSystem
 	{
 		List<IDrawableComponent> drawableComponents = new List<IDrawableComponent>();
+		List<PhysicsHitboxComponent> hitboxes = new List<PhysicsHitboxComponent>();
 
 		public RenderGameSystem(EntityContainer entityContainer) : base(entityContainer)
 		{
@@ -19,6 +20,10 @@ namespace Labyrinthian
 			foreach (var drawableComponent in this.drawableComponents)
 			{
 				drawableComponent.Draw(gameTime, spriteBatch);
+			}
+			foreach (var hitbox in this.hitboxes)
+			{
+				hitbox.Draw(gameTime, spriteBatch);
 			}
 			spriteBatch.End();
 		}
@@ -36,6 +41,10 @@ namespace Labyrinthian
 				{
 					return;
 				}
+				else if (d is PhysicsHitboxComponent h)
+				{
+					this.hitboxes.Add(h);
+				}
 				else
 				{
 					this.drawableComponents.Add(d);
@@ -52,6 +61,10 @@ namespace Labyrinthian
 				if (d is LightSourceComponent l)
 				{
 					return;
+				}
+				else if (d is PhysicsHitboxComponent h)
+				{
+					this.hitboxes.Remove(h);
 				}
 				else
 				{

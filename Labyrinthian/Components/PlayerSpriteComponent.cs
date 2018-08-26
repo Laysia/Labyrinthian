@@ -10,13 +10,39 @@ namespace Labyrinthian
 {
 	class PlayerSpriteComponent : AnimatedSpriteComponent
 	{
+		private PlayerInputComponent entityInput;
+		private PhysicsHitboxComponent entityHitbox;
+
 		public PlayerSpriteComponent(Texture2D texture, SpriteAnimator spriteAnimator) : base(texture, spriteAnimator)
 		{
 		}
 
+		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+		{
+			base.Draw(gameTime, spriteBatch);
+
+			if (this.entityHitbox == null)
+			{
+				this.entityHitbox = this.Entity?.GetComponent<PhysicsHitboxComponent>();
+				if (this.entityHitbox == null)
+				{
+					return;
+				}
+			}
+
+
+		}
+
 		protected override Rectangle GetSourceRectangle()
 		{
-			string animationName = "";
+			if (this.entityInput == null)
+			{
+				this.entityInput = this.Entity?.GetComponent<PlayerInputComponent>();
+				if (this.entityInput == null)
+				{
+					return new Rectangle();
+				}
+			}
 			if (this.entityPosition == null)
 			{
 				this.entityPosition = this.Entity?.GetComponent<PositionComponent>();
@@ -25,9 +51,11 @@ namespace Labyrinthian
 					return new Rectangle();
 				}
 			}
+
+			string animationName = "";
 			if (this.entityPosition.LastTickPosition != this.entityPosition.Position)
 			{
-				switch (this.entityPosition.Orientation)
+				switch (this.entityInput.Orientation)
 				{
 					case Orientation.Up:
 						animationName = "walk_up";
@@ -45,7 +73,7 @@ namespace Labyrinthian
 			}
 			else
 			{
-				switch (this.entityPosition.Orientation)
+				switch (this.entityInput.Orientation)
 				{
 					case Orientation.Up:
 						animationName = "up";

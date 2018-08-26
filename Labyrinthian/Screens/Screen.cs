@@ -57,7 +57,7 @@ namespace Labyrinthian
 			int width = 10;
 			int height = 10;
 
-			int scale = 1;
+			int scale = 2;
 
 			MazeGenerator gen = new MazeGenerator(width, height, new Point(1, 1), false);
 			byte[,] maze = gen.CreateMaze();
@@ -121,8 +121,10 @@ namespace Labyrinthian
 
 		public void Update(GameTime gameTime)
 		{
-			this.PhysicsGameSystem.Update(gameTime);
+			this.UpdateGameSystem.StartUpdating(gameTime);
 			this.UpdateGameSystem.Update(gameTime);
+			this.PhysicsGameSystem.Update(gameTime);
+			this.UpdateGameSystem.EndUpdating(gameTime);
 		}
 	}
 }

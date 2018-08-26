@@ -1,12 +1,16 @@
 ﻿using CHMonoTools.ECS;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Labyrinthian
 {
-	class PhysicsHitboxComponent : IComponent
+	class PhysicsHitboxComponent : IDrawableComponent
 	{
+		public static bool IsHitboxVisible {get; set;} = false;
 		public Entity Entity { get; set; }
 		public PositionComponent EntityPosition { get; set; }
+		private Texture2D rectangleTexture;
+
 
 		public int Width { get; set; }
 		public int Height { get; set; }
@@ -23,6 +27,8 @@ namespace Labyrinthian
 			this.Width = Width;
 			this.Height = Height;
 			this.EntityPosition = this.Entity?.GetComponent<PositionComponent>();
+			this.rectangleTexture = ProgrammerArt.WhiteOutlinedRectangle;
+
 		}
 
 		public void Initialize()
@@ -38,6 +44,14 @@ namespace Labyrinthian
 				{
 					return;
 				}
+			}
+		}
+
+		public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+		{
+			if (IsHitboxVisible)
+			{
+				spriteBatch.Draw(this.rectangleTexture, this.Hitbox, Color.White);
 			}
 		}
 	}

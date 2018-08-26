@@ -10,6 +10,7 @@ namespace Labyrinthian
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+		KeyboardState previousKeyboardState;
 
 		int levelCounter = 0;
 		Screen screen;
@@ -27,7 +28,9 @@ namespace Labyrinthian
 			this.IsMouseVisible = true;
 			this.Window.AllowUserResizing = true;
 			this.screen = new Screen(this);
-            base.Initialize();
+			this.previousKeyboardState = Keyboard.GetState();
+
+			base.Initialize();
 		}
 
 		protected override void LoadContent()
@@ -50,7 +53,11 @@ namespace Labyrinthian
 			{
 				Exit();
 			}
-
+			if (Keyboard.GetState().IsKeyDown(Keys.F3) && !this.previousKeyboardState.IsKeyDown(Keys.F3))
+			{
+				PhysicsHitboxComponent.IsHitboxVisible = !PhysicsHitboxComponent.IsHitboxVisible;
+			}
+			this.previousKeyboardState = Keyboard.GetState();
 			this.screen.Update(gameTime);
         }
 
