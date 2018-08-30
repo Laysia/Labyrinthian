@@ -10,7 +10,7 @@ namespace Labyrinthian
 	{
 		static Random rng = new Random();
 
-		private PositionComponent entityPosition;
+		private TilePositionComponent entityPosition;
 
 		public static Texture2D CircularLightTexture { get; set; } = ProgrammerArt.CreateGradientBlackCircle(100, 1.0);
 		public static List<Texture2D> CircularLightTextureAlternate { get; set; } = new List<Texture2D>()
@@ -68,7 +68,7 @@ namespace Labyrinthian
 		}
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is PositionComponent p)
+			if (e.Component is TilePositionComponent p)
 			{
 				this.entityPosition = p;
 			}

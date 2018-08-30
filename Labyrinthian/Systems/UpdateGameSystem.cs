@@ -16,7 +16,7 @@ namespace Labyrinthian
 
 		List<PlayerInputComponent> input = new List<PlayerInputComponent>();
 		List<Component> components = new List<Component>();
-		List<PositionComponent> positions = new List<PositionComponent>();
+		List<TilePositionComponent> positions = new List<TilePositionComponent>();
 
 		public UpdateGameSystem(EntityContainer entityContainer) : base(entityContainer)
 		{
@@ -49,7 +49,7 @@ namespace Labyrinthian
 
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is PositionComponent p)
+			if (e.Component is TilePositionComponent p)
 			{
 				this.positions.Add(p);
 			}
@@ -65,7 +65,7 @@ namespace Labyrinthian
 
 		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is PositionComponent p)
+			if (e.Component is TilePositionComponent p)
 			{
 				this.positions.Remove(p);
 			}

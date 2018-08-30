@@ -8,7 +8,7 @@ namespace Labyrinthian
 	{
 		public Texture2D Texture { get; set; }
 		public Color Color { get; set; } = Color.White;
-		protected PositionComponent entityPosition;
+		protected TilePositionComponent entityPosition;
 		protected Rectangle SourceRectangle { get; set; }
 
 		public SpriteComponent(Texture2D texture)
@@ -32,7 +32,7 @@ namespace Labyrinthian
 		}
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is PositionComponent p)
+			if (e.Component is TilePositionComponent p)
 			{
 				this.entityPosition = p;
 			}

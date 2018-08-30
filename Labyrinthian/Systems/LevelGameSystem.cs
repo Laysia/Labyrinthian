@@ -12,8 +12,6 @@ namespace Labyrinthian
 		private LevelCompleterComponent levelCompleterComponent;
 		static Random rng = new Random();
 
-		public static int LevelCount = 1;
-
 		public LevelGameSystem(EntityContainer entityContainer) : base(entityContainer)
 		{
 			this.entityContainer = entityContainer;
@@ -98,7 +96,7 @@ namespace Labyrinthian
 		private void levelComplete()
 		{
 			SetupNewLevel();
-			LevelCount++;
+			LabyrinthianGame.Game.levelCounter++;
 		}
 
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)

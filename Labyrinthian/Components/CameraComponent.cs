@@ -6,7 +6,7 @@ namespace Labyrinthian
 {
 	class CameraComponent : Component
 	{
-		private PositionComponent entityPosition;
+		private TilePositionComponent entityPosition;
 
 		public Viewport Viewport
 		{
@@ -55,7 +55,7 @@ namespace Labyrinthian
 			}
 		}
 
-		private PositionComponent EntityPosition
+		private TilePositionComponent EntityPosition
 		{
 			get
 			{
@@ -93,7 +93,7 @@ namespace Labyrinthian
 
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is PositionComponent p)
+			if (e.Component is TilePositionComponent p)
 			{
 				this.EntityPosition = p;
 			}

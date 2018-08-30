@@ -1,9 +1,7 @@
 ﻿using CHMonoTools;
 using CHMonoTools.ECS;
-using Labyrinthian.Prefabs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Labyrinthian
 {
@@ -17,6 +15,7 @@ namespace Labyrinthian
 		public UpdateGameSystem UpdateGameSystem { get; set; }
 		public PhysicsGameSystem PhysicsGameSystem { get; set; }
 		public LevelGameSystem LevelGameSystem { get; set; }
+		public TileGameSystem TileGameSystem { get; set; }
 
 		public Screen(Game game)
 		{
@@ -34,6 +33,7 @@ namespace Labyrinthian
 			this.UpdateGameSystem = new UpdateGameSystem(this.EntityContainer);
 			this.PhysicsGameSystem = new PhysicsGameSystem(this.EntityContainer);
 			this.LevelGameSystem = new LevelGameSystem(this.EntityContainer);
+			this.TileGameSystem = new TileGameSystem(this.EntityContainer);
 
 			this.LevelGameSystem.SetupNewLevel();
 

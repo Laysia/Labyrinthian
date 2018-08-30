@@ -4,7 +4,7 @@ namespace Labyrinthian
 {
 	class LevelCompleteEventComponent : Component
 	{
-		public PositionComponent EntityPosition { get; set; }
+		public TilePositionComponent EntityPosition { get; set; }
 		public PhysicsHitboxComponent EntityHitbox { get; set; }
 
 		public LevelCompleteEventComponent()
@@ -13,7 +13,7 @@ namespace Labyrinthian
 
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is PositionComponent p)
+			if (e.Component is TilePositionComponent p)
 			{
 				this.EntityPosition = p;
 			}

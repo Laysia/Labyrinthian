@@ -11,7 +11,7 @@ namespace Labyrinthian.Prefabs
 			Entity player = new Entity();
 
 			player.Add(new PlayerInputComponent());
-			var component = new PositionComponent(Position);
+			var component = new TilePositionComponent(Position);
 			LabyrinthianGame.PlayerPosition = component;
 			player.Add(component);
 			player.Add(new TransformComponent());

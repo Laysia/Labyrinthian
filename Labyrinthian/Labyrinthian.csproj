@@ -67,8 +67,8 @@
     <Compile Include="Components\PhysicsHitboxComponent.cs" />
     <Compile Include="Components\PlayerInputComponent.cs" />
     <Compile Include="Components\PlayerSpriteComponent.cs" />
-    <Compile Include="Components\PositionComponent.cs" />
     <Compile Include="Components\SpriteComponent.cs" />
+    <Compile Include="Components\TilePositionComponent.cs" />
     <Compile Include="Components\TorchSpriteComponent.cs" />
     <Compile Include="Components\TransformComponent.cs" />
     <Compile Include="Config\Config.cs" />
@@ -85,6 +85,7 @@
     <Compile Include="Systems\LightingGameSystem.cs" />
     <Compile Include="Systems\PhysicsGameSystem.cs" />
     <Compile Include="Systems\RenderGameSystem.cs" />
+    <Compile Include="Systems\TileGameSystem.cs" />
     <Compile Include="Systems\UpdateGameSystem.cs" />
     <Compile Include="LabyrinthianGame.cs" />
     <Compile Include="Program.cs" />

@@ -7,7 +7,7 @@ namespace Labyrinthian
 	class PhysicsHitboxComponent : Component, IDrawableComponent
 	{
 		public static bool IsHitboxVisible {get; set;} = false;
-		public PositionComponent EntityPosition { get; set; }
+		public TilePositionComponent EntityPosition { get; set; }
 		public TransformComponent Transform { get; private set; }
 		private Texture2D rectangleTexture;
 
@@ -48,7 +48,7 @@ namespace Labyrinthian
 
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is PositionComponent p)
+			if (e.Component is TilePositionComponent p)
 			{
 				this.EntityPosition = p;
 			}
@@ -61,7 +61,7 @@ namespace Labyrinthian
 
 		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is PositionComponent p)
+			if (e.Component is TilePositionComponent p)
 			{
 				this.EntityPosition = null;
 			}

@@ -12,9 +12,9 @@ namespace Labyrinthian
         SpriteBatch spriteBatch;
 		KeyboardState previousKeyboardState;
 
-		int levelCounter = 0;
+		public int levelCounter = 1;
 		Screen screen;
-		internal static PositionComponent PlayerPosition { get; set; }
+		internal static TilePositionComponent PlayerPosition { get; set; }
 
 		public static int CamerasAdded = 0;
 		public static int CamerasRemoved = 0;
@@ -71,13 +71,15 @@ namespace Labyrinthian
 			// UI
 			this.spriteBatch.Begin();
 			SpriteFont spriteFont = this.Content.Load<SpriteFont>(@"Fonts/Default");
-			this.spriteBatch.DrawString(spriteFont, $"Level: {this.levelCounter}", Vector2.One * 10, Color.White);
+			this.spriteBatch.DrawString(spriteFont, $"FPS: {(1 / (float)gameTime.ElapsedGameTime.TotalSeconds).ToString("0.0")}", Vector2.One * 2, Color.White);
+			this.spriteBatch.DrawString(spriteFont, $"Level: {this.levelCounter}", Vector2.One * 2 + new Vector2(0, 20), Color.White);
 			if (PlayerPosition != null)
 			{
-				this.spriteBatch.DrawString(spriteFont, $"X: {PlayerPosition.Position.X}", Vector2.One * 10 + new Vector2(0, 20), Color.White);
-				this.spriteBatch.DrawString(spriteFont, $"Y: {PlayerPosition.Position.Y}", Vector2.One * 10 + new Vector2(0, 40), Color.White);
+				this.spriteBatch.DrawString(spriteFont, $"X: {PlayerPosition.Position.X}", Vector2.One * 2 + new Vector2(0, 40), Color.White);
+				this.spriteBatch.DrawString(spriteFont, $"Y: {PlayerPosition.Position.Y}", Vector2.One * 2 + new Vector2(0, 60), Color.White);
+				this.spriteBatch.DrawString(spriteFont, $"TileX: {PlayerPosition.TilePosition.X}", Vector2.One * 2 + new Vector2(0, 80), Color.White);
+				this.spriteBatch.DrawString(spriteFont, $"TileY: {PlayerPosition.TilePosition.Y}", Vector2.One * 2 + new Vector2(0, 100), Color.White);
 			}
-			this.spriteBatch.DrawString(spriteFont, $"Level: {LevelGameSystem.LevelCount}", Vector2.One * 10 + new Vector2(0, 80), Color.White);
 
 			this.spriteBatch.End();
             base.Draw(gameTime);
