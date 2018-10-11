@@ -9,6 +9,7 @@ namespace CHMonoToolsTests.ECS
 	class TestComponent : IComponent
 	{
 		public Entity Entity { get; set; }
+		public bool Enabled { get; set; } = true;
 
 		public void Initialize()
 		{

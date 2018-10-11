@@ -86,7 +86,7 @@ namespace Labyrinthian
 		{
 			if (this.levelCompleterComponent != null && this.levelCompleteEventComponent != null)
 			{
-				if ((this.levelCompleterComponent.EntityHitbox?.Hitbox ?? Rectangle.Empty).Intersects(this.levelCompleteEventComponent.EntityHitbox?.Hitbox ?? Rectangle.Empty))
+				if ((this.levelCompleterComponent.EntityHitbox?.Box ?? Rectangle.Empty).Intersects(this.levelCompleteEventComponent.EntityHitbox?.Box ?? Rectangle.Empty))
 				{
 					levelComplete();
 				}

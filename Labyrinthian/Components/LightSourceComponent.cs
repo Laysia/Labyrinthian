@@ -23,8 +23,10 @@ namespace Labyrinthian
 			ProgrammerArt.CreateGradientBlackCircle(100, .9)
 		};
 
+		public Point Offset { get; set; }
 		public int Radius { get; set; }
 		public bool Flickering { get; set; } = false;
+		public bool Visible { get; set; } = true;
 
 		private double flickerTimerInMS = 40.0;
 		private double flickerTimerProgress = 0.0;
@@ -62,7 +64,7 @@ namespace Labyrinthian
 			{
 				spriteBatch.Draw(
 					this.currentTexture,
-					new Rectangle((int)this.entityPosition.Position.X - this.Radius, (int)this.entityPosition.Position.Y - this.Radius, 2 * this.Radius, 2 * this.Radius),
+					new Rectangle((int)this.entityPosition.ActualPosition.X - this.Radius + this.Offset.X, (int)this.entityPosition.ActualPosition.Y - this.Radius + this.Offset.Y, 2 * this.Radius, 2 * this.Radius),
 					Color.White);
 			}
 		}

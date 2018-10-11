@@ -14,29 +14,36 @@ namespace Labyrinthian
 		{
 			float percentage = (float)gameTime.ElapsedGameTime.TotalSeconds * Config.TickRate;
 
-			if (entityTransform != null)
+			if (this.entityTransform != null)
 			{
+				Vector2 movementDirection = Vector2.Zero;
 				var state = Keyboard.GetState();
 				if (state.IsKeyDown(Keys.W))
 				{
+					movementDirection += new Vector2(0, -0.95f);
 					this.Orientation = Orientation.Up;
-					entityTransform.Transform = entityTransform.Transform * Matrix.CreateTranslation((new Vector2(0, -1) * this.speed * percentage).ToVector3());
 				}
-				else if (state.IsKeyDown(Keys.A))
+				if (state.IsKeyDown(Keys.A))
 				{
 					this.Orientation = Orientation.Left;
-					entityTransform.Transform = entityTransform.Transform * Matrix.CreateTranslation((new Vector2(-1, 0) * this.speed * percentage).ToVector3());
+					movementDirection += new Vector2(-1, 0);
 				}
-				else if (state.IsKeyDown(Keys.S))
+				if (state.IsKeyDown(Keys.S))
 				{
 					this.Orientation = Orientation.Down;
-					entityTransform.Transform = entityTransform.Transform * Matrix.CreateTranslation((new Vector2(0, 1) * this.speed * percentage).ToVector3());
+					movementDirection += new Vector2(0, 0.95f);
 				}
-				else if (state.IsKeyDown(Keys.D))
+				if (state.IsKeyDown(Keys.D))
 				{
 					this.Orientation = Orientation.Right;
-					entityTransform.Transform = entityTransform.Transform * Matrix.CreateTranslation((new Vector2(1, 0) * this.speed * percentage).ToVector3());
+					movementDirection += new Vector2(1, 0);
 				}
+				if (movementDirection != Vector2.Zero)
+				{
+					movementDirection.Normalize();
+					this.entityTransform.Movement += movementDirection * this.speed * percentage;
+				}
+
 			}
 			base.Update(gameTime);
 		}

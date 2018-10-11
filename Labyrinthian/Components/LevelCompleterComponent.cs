@@ -5,7 +5,7 @@ namespace Labyrinthian
 	class LevelCompleterComponent : Component
 	{
 		public TilePositionComponent EntityPosition { get; set; }
-		public PhysicsHitboxComponent EntityHitbox { get; set; }
+		public BoxColliderComponent EntityHitbox { get; set; }
 
 		public LevelCompleterComponent()
 		{
@@ -17,9 +17,9 @@ namespace Labyrinthian
 			{
 				this.EntityPosition = p;
 			}
-			else if (e.Component is PhysicsHitboxComponent h)
+			else if (e.Component is BoxColliderComponent b)
 			{
-				this.EntityHitbox = h;
+				this.EntityHitbox = b;
 			}
 			base.Entity_ComponentAdded(sender, e);
 		}

@@ -4,13 +4,17 @@ using System.Linq;
 
 namespace CHMonoTools.ECS
 {
-	public class Entity
+	public class Entity : IDisposable
 	{
 		private List<IComponent> components = new List<IComponent>();
 
 		public delegate void ComponentEventHandler(Entity sender, ComponentEventArgs e);
+		public delegate void EntityDisposedHandler(Entity sender);
 		public event ComponentEventHandler ComponentAdded;
 		public event ComponentEventHandler ComponentRemoved;
+		public event EntityDisposedHandler Disposed;
+
+		protected Entity() { }
 
 		public void Add(IComponent component)
 		{
@@ -56,6 +60,23 @@ namespace CHMonoTools.ECS
 		public IEnumerable<IComponent> GetComponents()
 		{
 			return this.components;
+		}
+
+
+		public static Entity CreateNew()
+		{
+			return new Entity();
+		}
+
+		public void Dispose()
+		{
+			for (int i = this.components.Count - 1; i >= 0; --i)
+			{
+				var comp = this.components[i];
+				this.components.RemoveAt(i);
+				this.ComponentRemoved?.Invoke(this, new ComponentEventArgs(comp));
+			}
+			this.Disposed?.Invoke(this);
 		}
 	}
 }

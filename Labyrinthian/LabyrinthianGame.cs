@@ -1,19 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using CHMonoTools.ECS;
 
 namespace Labyrinthian
 {
 	public class LabyrinthianGame : Game
     {
 		public static LabyrinthianGame Game = new LabyrinthianGame();
-
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 		KeyboardState previousKeyboardState;
 
 		public int levelCounter = 1;
-		Screen screen;
+		Scene screen;
 		internal static TilePositionComponent PlayerPosition { get; set; }
 
 		public static int CamerasAdded = 0;
@@ -30,7 +30,7 @@ namespace Labyrinthian
 			this.Window.Title = "Labyrinthian";
 			this.IsMouseVisible = true;
 			this.Window.AllowUserResizing = true;
-			this.screen = new Screen(this);
+			this.screen = new Scene(this);
 			this.previousKeyboardState = Keyboard.GetState();
 
 			base.Initialize();
@@ -58,7 +58,7 @@ namespace Labyrinthian
 			}
 			if (Keyboard.GetState().IsKeyDown(Keys.F3) && !this.previousKeyboardState.IsKeyDown(Keys.F3))
 			{
-				PhysicsHitboxComponent.IsHitboxVisible = !PhysicsHitboxComponent.IsHitboxVisible;
+				//PhysicsHitboxComponent.IsHitboxVisible = !PhysicsHitboxComponent.IsHitboxVisible;
 			}
 			this.previousKeyboardState = Keyboard.GetState();
 			this.screen.Update(gameTime);
@@ -75,8 +75,8 @@ namespace Labyrinthian
 			this.spriteBatch.DrawString(spriteFont, $"Level: {this.levelCounter}", Vector2.One * 2 + new Vector2(0, 20), Color.White);
 			if (PlayerPosition != null)
 			{
-				this.spriteBatch.DrawString(spriteFont, $"X: {PlayerPosition.Position.X}", Vector2.One * 2 + new Vector2(0, 40), Color.White);
-				this.spriteBatch.DrawString(spriteFont, $"Y: {PlayerPosition.Position.Y}", Vector2.One * 2 + new Vector2(0, 60), Color.White);
+				this.spriteBatch.DrawString(spriteFont, $"X: {PlayerPosition.ActualPosition.X}", Vector2.One * 2 + new Vector2(0, 40), Color.White);
+				this.spriteBatch.DrawString(spriteFont, $"Y: {PlayerPosition.ActualPosition.Y}", Vector2.One * 2 + new Vector2(0, 60), Color.White);
 				this.spriteBatch.DrawString(spriteFont, $"TileX: {PlayerPosition.TilePosition.X}", Vector2.One * 2 + new Vector2(0, 80), Color.White);
 				this.spriteBatch.DrawString(spriteFont, $"TileY: {PlayerPosition.TilePosition.Y}", Vector2.One * 2 + new Vector2(0, 100), Color.White);
 			}

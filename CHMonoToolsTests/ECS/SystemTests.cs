@@ -11,7 +11,7 @@ namespace CHMonoToolsTests.ECS
 			var entityContainer = new EntityContainer();
 			var System = new TestGameSystem(entityContainer);
 
-			var Entity1 = new Entity();
+			var Entity1 = Entity.CreateNew();
 			Entity1.Add(new TestComponent());
 			Entity1.Add(new TestChildComponent());
 
@@ -19,7 +19,7 @@ namespace CHMonoToolsTests.ECS
 
 			Assert.True(System.componentsAdded == 2 && System.componentsRemoved == 0);
 
-			var Entity2 = new Entity();
+			var Entity2 = Entity.CreateNew();
 			entityContainer.Add(Entity2);
 			Entity2.Add(new TestComponent());
 

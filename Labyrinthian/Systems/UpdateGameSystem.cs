@@ -10,20 +10,21 @@ namespace Labyrinthian
 		 * Update Order:
 		 * 1. PlayerInput
 		 * 2. Everything else
-		 * 3. PhysicsSystem
-		 * 4. PositionComponents
+		 * 3. PositionComponents (To Set LastTTickPosition)
+		 * 4. PhysicsSystem
+		 * 
 		 */
 
 		List<PlayerInputComponent> input = new List<PlayerInputComponent>();
-		List<Component> components = new List<Component>();
-		List<TilePositionComponent> positions = new List<TilePositionComponent>();
+		List<IComponent> components = new List<IComponent>();
+		List<ITilePositionComponent> positions = new List<ITilePositionComponent>();
 
 		public UpdateGameSystem(EntityContainer entityContainer) : base(entityContainer)
 		{
 
 		}
 
-		public void StartUpdating(GameTime gameTime)
+		public void FirstUpdate(GameTime gameTime)
 		{
 			foreach (var input in this.input)
 			{
@@ -33,23 +34,24 @@ namespace Labyrinthian
 			{
 				comp.Update(gameTime);
 			}
-		}
-
-		public override void Update(GameTime gameTime)
-		{
-		}
-
-		public void EndUpdating(GameTime gameTime)
-		{
 			foreach (var pcomp in this.positions)
 			{
 				pcomp.Update(gameTime);
 			}
 		}
 
+		public override void Update(GameTime gameTime)
+		{
+		}
+
+		public void Lastupdate(GameTime gameTime)
+		{
+
+		}
+
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is TilePositionComponent p)
+			if (e.Component is ITilePositionComponent p)
 			{
 				this.positions.Add(p);
 			}
@@ -59,19 +61,19 @@ namespace Labyrinthian
 			}
 			else
 			{
-				this.components.Add((CHMonoTools.ECS.Component)e.Component);
+				this.components.Add((IComponent)e.Component);
 			}
 		}
 
 		protected override void Entity_ComponentRemoved(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is TilePositionComponent p)
+			if (e.Component is ITilePositionComponent p)
 			{
 				this.positions.Remove(p);
 			}
 			else
 			{
-				this.components.Remove((CHMonoTools.ECS.Component)e.Component);
+				this.components.Remove((IComponent)e.Component);
 			}
 		}
 	}

@@ -10,6 +10,7 @@ namespace Labyrinthian
 		public Color Color { get; set; } = Color.White;
 		protected TilePositionComponent entityPosition;
 		protected Rectangle SourceRectangle { get; set; }
+		public bool Visible { get; set; } = true;
 
 		public SpriteComponent(Texture2D texture)
 		{
@@ -24,11 +25,11 @@ namespace Labyrinthian
 
 		public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-			if (this.entityPosition == null)
+			if (this.entityPosition == null || !this.Visible)
 			{
 				return;
 			}
-			spriteBatch.Draw(this.Texture, this.entityPosition.Position - this.SourceRectangle.Size.ToVector2() / 2, this.SourceRectangle, this.Color);
+			spriteBatch.Draw(this.Texture, this.entityPosition.ActualPosition, this.SourceRectangle, this.Color);
 		}
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{

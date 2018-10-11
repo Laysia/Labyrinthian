@@ -13,7 +13,7 @@ namespace CHMonoToolsTests.ECS
 			EntityContainer.EntityAdded += (sender, e) => { entitiyCount++; };
 			EntityContainer.EntityRemoved += (sender, e) => { entitiyCount--; };
 
-			Entity entity = new Entity();
+			Entity entity = Entity.CreateNew();
 			EntityContainer.Add(entity);
 			Assert.True(entitiyCount == 1);
 			EntityContainer.Remove(entity);

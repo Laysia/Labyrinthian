@@ -1,4 +1,6 @@
-﻿using CHMonoTools.ECS;
+﻿using System;
+using System.Collections.Generic;
+using CHMonoTools.ECS;
 using Xunit;
 
 namespace CHMonoToolsTests.ECS
@@ -9,9 +11,9 @@ namespace CHMonoToolsTests.ECS
 		public void AddComponentEventTriggersTest()
 		{
 			bool triggered = false;
-			var Entity = new Entity();
-			Entity.ComponentAdded += (sender, e) => { triggered = true; };
-			Entity.Add(new TestComponent());
+			var entity = Entity.CreateNew();
+			entity.ComponentAdded += (sender, e) => { triggered = true; };
+			entity.Add(new TestComponent());
 			Assert.True(triggered);
 		}
 
@@ -19,39 +21,39 @@ namespace CHMonoToolsTests.ECS
 		public void RemoveComponentEventTriggersTest()
 		{
 			bool triggered = false;
-			var Entity = new Entity();
+			var entity = Entity.CreateNew();
 			var component = new TestComponent();
-			Entity.Remove(component);
+			entity.Remove(component);
 			Assert.False(triggered);
 
-			Entity.ComponentRemoved += (sender, e) => { triggered = true; };
-			Entity.Add(component);
-			Entity.Remove(component);
+			entity.ComponentRemoved += (sender, e) => { triggered = true; };
+			entity.Add(component);
+			entity.Remove(component);
 			Assert.True(triggered);
 		}
 
 		[Fact]
 		public void GetComponentTest()
 		{
-			var Entity = new Entity();
+			var entity = Entity.CreateNew();
 			var component = new TestComponent();
-			var compNull = Entity.GetComponent<TestComponent>();
+			var compNull = entity.GetComponent<TestComponent>();
 			Assert.Null(compNull);
 
-			Entity.Add(component);
-			var comp2 = Entity.GetComponent<TestComponent>();
+			entity.Add(component);
+			var comp2 = entity.GetComponent<TestComponent>();
 			Assert.Equal(component, comp2);
 		}
 
 		[Fact]
 		public void GetChildComponentTest()
 		{
-			var Entity = new Entity();
+			var entity = Entity.CreateNew();
 			var parentComp = new TestComponent();
 			var childComp = new TestChildComponent();
 
-			Entity.Add(childComp);
-			var returnVal = Entity.GetComponent<TestComponent>();
+			entity.Add(childComp);
+			var returnVal = entity.GetComponent<TestComponent>();
 
 			Assert.NotNull(returnVal);
 		}
@@ -59,15 +61,15 @@ namespace CHMonoToolsTests.ECS
 		[Fact]
 		public void AutoEntitySetterTest()
 		{
-			var Entity = new Entity();
+			var entity = Entity.CreateNew();
 			var comp = new TestComponent();
 			Assert.Null(comp.Entity);
 
-			Entity.Add(comp);
+			entity.Add(comp);
 
-			Assert.Equal(comp.Entity, Entity);
+			Assert.Equal(comp.Entity, entity);
 
-			Entity.Remove(comp);
+			entity.Remove(comp);
 
 			Assert.Null(comp.Entity);
 		}

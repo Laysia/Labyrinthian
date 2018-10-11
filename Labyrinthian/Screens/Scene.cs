@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Labyrinthian
 {
-	class Screen : IGameObject
+	class Scene : IGameObject
 	{
 		public Game Game { get; set; }
 		public EntityContainer EntityContainer { get; set; }
@@ -16,8 +16,9 @@ namespace Labyrinthian
 		public PhysicsGameSystem PhysicsGameSystem { get; set; }
 		public LevelGameSystem LevelGameSystem { get; set; }
 		public TileGameSystem TileGameSystem { get; set; }
+		public PositionTransformGameSystem PositionTransformGameSystem { get; set; }
 
-		public Screen(Game game)
+		public Scene(Game game)
 		{
 			this.Game = game;
 			this.Game.Window.ClientSizeChanged += window_ClientSizeChanged;
@@ -31,9 +32,10 @@ namespace Labyrinthian
 			this.LightingGameSystem = new LightingGameSystem(this.EntityContainer, this.Game.GraphicsDevice);
 			this.RenderGameSystem = new RenderGameSystem(this.EntityContainer);
 			this.UpdateGameSystem = new UpdateGameSystem(this.EntityContainer);
-			this.PhysicsGameSystem = new PhysicsGameSystem(this.EntityContainer);
-			this.LevelGameSystem = new LevelGameSystem(this.EntityContainer);
 			this.TileGameSystem = new TileGameSystem(this.EntityContainer);
+			this.PhysicsGameSystem = new PhysicsGameSystem(this.EntityContainer, this.TileGameSystem);
+			this.LevelGameSystem = new LevelGameSystem(this.EntityContainer);
+			this.PositionTransformGameSystem = new PositionTransformGameSystem(this.EntityContainer);
 
 			this.LevelGameSystem.SetupNewLevel();
 
@@ -59,10 +61,12 @@ namespace Labyrinthian
 
 		public void Update(GameTime gameTime)
 		{
-			this.UpdateGameSystem.StartUpdating(gameTime);
+			this.PositionTransformGameSystem.ResetAllTransforms();
+			this.UpdateGameSystem.FirstUpdate(gameTime);
 			this.UpdateGameSystem.Update(gameTime);
 			this.PhysicsGameSystem.Update(gameTime);
-			this.UpdateGameSystem.EndUpdating(gameTime);
+			//this.PositionTransformGameSystem.Update(gameTime);
+			this.UpdateGameSystem.Lastupdate(gameTime);
 			this.LevelGameSystem.Update(gameTime);
 		}
 	}

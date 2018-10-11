@@ -14,6 +14,12 @@ namespace CHMonoTools.ECS
 		{
 			this.entities.Add(entity);
 			this.EntityAdded?.Invoke(this, new EntityEventArgs(entity));
+			entity.Disposed += onEntity_Disposed;
+		}
+
+		private void onEntity_Disposed(Entity sender)
+		{
+			this.Remove(sender);
 		}
 
 		public bool Remove(Entity entity)
@@ -30,9 +36,7 @@ namespace CHMonoTools.ECS
 		{
 			for (int i = this.entities.Count - 1; i >= 0; --i)
 			{
-				var entity = this.entities[i];
-				this.entities.Remove(entity);
-				this.EntityRemoved?.Invoke(this, new EntityEventArgs(entity));
+				this.Remove(this.entities[i]);
 			}
 		}
 

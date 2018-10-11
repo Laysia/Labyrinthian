@@ -25,7 +25,7 @@ namespace Labyrinthian
 			}
 
 			string animationName = "";
-			if (this.entityPosition.LastTickPosition != this.entityPosition.Position)
+			if (this.entityPosition.LastTickPosition != this.entityPosition.ActualPosition)
 			{
 				switch (this.entityInput.Orientation)
 				{

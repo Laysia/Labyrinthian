@@ -6,7 +6,7 @@ namespace Labyrinthian
 {
 	class CameraComponent : Component
 	{
-		private TilePositionComponent entityPosition;
+		private ITilePositionComponent entityPosition;
 
 		public Viewport Viewport
 		{
@@ -55,7 +55,7 @@ namespace Labyrinthian
 			}
 		}
 
-		private TilePositionComponent EntityPosition
+		private ITilePositionComponent EntityPosition
 		{
 			get
 			{
@@ -76,7 +76,7 @@ namespace Labyrinthian
 
 		public override void Update(GameTime gameTime)
 		{
-			if (this.entityPosition != null && this.EntityPosition.Position != this.EntityPosition.LastTickPosition)
+			if (this.entityPosition != null && this.EntityPosition.ActualPosition != this.EntityPosition.LastTickPosition)
 			{
 				updateCamera();
 			}
@@ -85,7 +85,7 @@ namespace Labyrinthian
 
 		private void updateCamera()
 		{
-			this.World = Matrix.CreateTranslation(Vector3.Negate(this.EntityPosition.Position.ToVector3()));
+			this.World = Matrix.CreateTranslation(Vector3.Negate(this.EntityPosition.ActualPosition.ToVector3()));
 			this.View = Matrix.CreateTranslation(new Vector3(x: this.Viewport.Width / this.Zoom * 0.5f, y: this.Viewport.Height / this.Zoom * 0.5f, z: 0))
 				* Matrix.CreateScale(new Vector3(this.Zoom, this.Zoom, 1));
 			this.TransformationMatrix = this.World * this.View;
@@ -93,7 +93,7 @@ namespace Labyrinthian
 
 		protected override void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
 		{
-			if (e.Component is TilePositionComponent p)
+			if (e.Component is ITilePositionComponent p)
 			{
 				this.EntityPosition = p;
 			}

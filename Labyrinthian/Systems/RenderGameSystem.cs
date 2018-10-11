@@ -8,7 +8,7 @@ namespace Labyrinthian
 	class RenderGameSystem : DrawableGameSystem
 	{
 		List<IDrawableComponent> drawableComponents = new List<IDrawableComponent>();
-		List<PhysicsHitboxComponent> hitboxes = new List<PhysicsHitboxComponent>();
+		List<BoxColliderComponent> hitboxes = new List<BoxColliderComponent>();
 
 		public RenderGameSystem(EntityContainer entityContainer) : base(entityContainer)
 		{
@@ -23,7 +23,7 @@ namespace Labyrinthian
 			}
 			foreach (var hitbox in this.hitboxes)
 			{
-				hitbox.Draw(gameTime, spriteBatch);
+				spriteBatch.Draw(ProgrammerArt.WhiteOutlinedRectangle, hitbox.Box, Color.White);
 			}
 			spriteBatch.End();
 		}
@@ -41,14 +41,14 @@ namespace Labyrinthian
 				{
 					return;
 				}
-				else if (d is PhysicsHitboxComponent h)
-				{
-					this.hitboxes.Add(h);
-				}
 				else
 				{
 					this.drawableComponents.Add(d);
 				}
+			}
+			else if (e.Component is BoxColliderComponent h)
+			{
+				this.hitboxes.Add(h);
 			}
 
 			base.Entity_ComponentAdded(sender, e);
@@ -62,14 +62,14 @@ namespace Labyrinthian
 				{
 					return;
 				}
-				else if (d is PhysicsHitboxComponent h)
-				{
-					this.hitboxes.Remove(h);
-				}
 				else
 				{
 					this.drawableComponents.Remove(d);
 				}
+			}
+			else if (e.Component is BoxColliderComponent h)
+			{
+				this.hitboxes.Remove(h);
 			}
 
 			base.Entity_ComponentRemoved(sender, e);

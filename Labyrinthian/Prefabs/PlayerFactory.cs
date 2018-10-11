@@ -8,7 +8,7 @@ namespace Labyrinthian.Prefabs
 	{
 		public static Entity CreatePlayerEntity(Vector2 Position)
 		{
-			Entity player = new Entity();
+			Entity player = Entity.CreateNew();
 
 			player.Add(new PlayerInputComponent());
 			var component = new TilePositionComponent(Position);
@@ -16,8 +16,9 @@ namespace Labyrinthian.Prefabs
 			player.Add(component);
 			player.Add(new TransformComponent());
 			player.Add(new PlayerSpriteComponent(LabyrinthianGame.Game.Content.Load<Texture2D>(@"Textures/PlayerFemale"), new SpriteAnimator(SpriteAnimator.PlayerRectangles) { TimeBetweenAnimationInMs = 200 }));
-			player.Add(new PhysicsHitboxComponent(20, 26));
-			player.Add(new LightSourceComponent(100));
+			player.Add(new BoxColliderComponent(new Point(6,3), new Point(20,26)));
+			player.Add(new RigidBodyComponent(BodyType.Dynamic));
+			player.Add(new LightSourceComponent(100) { Offset = new Point(16, 16) });
 			player.Add(new CameraComponent(LabyrinthianGame.Game.GraphicsDevice.Viewport));
 			player.Add(new LevelCompleterComponent());
 

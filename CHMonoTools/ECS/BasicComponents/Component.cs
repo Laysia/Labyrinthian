@@ -4,6 +4,7 @@ namespace CHMonoTools.ECS
 {
 	public abstract class Component : IComponent
 	{
+		public bool Enabled { get; set; } = true;
 		private Entity entity;
 		public Entity Entity
 		{
@@ -32,12 +33,17 @@ namespace CHMonoTools.ECS
 			}
 		}
 
+
 		public virtual void Initialize()
 		{
 		}
 
 		public virtual void Update(GameTime gameTime)
 		{
+			if (!this.Enabled)
+			{
+				return;
+			}
 		}
 
 		protected virtual void Entity_ComponentAdded(Entity sender, ComponentEventArgs e)
